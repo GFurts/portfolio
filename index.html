@@ -289,32 +289,64 @@
       const [state,setState] = useState("idle");
       const [result,setResult] = useState(null);
       const [inputs,setInputs] = useState({
-        tenure:12,monthly_charges:65.5,
-        contract:"Month-to-month",internet_service:"Fiber optic",
-        tech_support:"No",online_security:"No"
+        tenure: 12,
+        MonthlyCharges: 65.5,
+        Contract: "Month-to-month",
+        InternetService: "Fiber optic",
+        TechSupport: "No",
+        OnlineSecurity: "No",
+        gender: "Male",
+        SeniorCitizen: 0
       });
       const set=(k,v)=>setInputs(p=>({...p,[k]:v}));
+
+      const buildPayload = inp => ({
+        gender: inp.gender,
+        SeniorCitizen: Number(inp.SeniorCitizen),
+        Partner: "No",
+        Dependents: "No",
+        tenure: Number(inp.tenure),
+        PhoneService: "Yes",
+        MultipleLines: "No",
+        InternetService: inp.InternetService,
+        OnlineSecurity: inp.OnlineSecurity,
+        OnlineBackup: "No",
+        DeviceProtection: "No",
+        TechSupport: inp.TechSupport,
+        StreamingTV: "No",
+        StreamingMovies: "No",
+        Contract: inp.Contract,
+        PaperlessBilling: "Yes",
+        PaymentMethod: "Electronic check",
+        MonthlyCharges: Number(inp.MonthlyCharges),
+        TotalCharges: Number(inp.tenure) * Number(inp.MonthlyCharges)
+      });
+
       const simulate=inp=>{
         let p=0.47;
-        if(inp.contract==="Month-to-month") p+=.22;
-        if(inp.contract==="Two year") p-=.28;
+        if(inp.Contract==="Month-to-month") p+=.22;
+        if(inp.Contract==="Two year") p-=.28;
         if(Number(inp.tenure)<6) p+=.16;
         if(Number(inp.tenure)>24) p-=.13;
-        if(Number(inp.monthly_charges)>80) p+=.10;
-        if(inp.internet_service==="Fiber optic"&&inp.tech_support==="No") p+=.09;
-        if(inp.online_security==="Yes") p-=.08;
+        if(Number(inp.MonthlyCharges)>80) p+=.10;
+        if(inp.InternetService==="Fiber optic"&&inp.TechSupport==="No") p+=.09;
+        if(inp.OnlineSecurity==="Yes") p-=.08;
+        if(Number(inp.SeniorCitizen)===1) p+=.06;
         return Math.max(.04,Math.min(.96,p));
       };
+
       const run=async()=>{
         setState("loading");
         try{
           const res=await fetch("https://churn-prediction-ml-e4f1.onrender.com/predict",{
             method:"POST",headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(inputs),signal:AbortSignal.timeout(20000)
+            body:JSON.stringify(buildPayload(inputs)),
+            signal:AbortSignal.timeout(35000)
           });
           if(res.ok){
             const data=await res.json();
-            setResult({prob:data.churn_probability??data.probability??0.5,live:true});
+            const prob=data.churn_probability??data.probability??data.churn_prob??data.prediction??0.5;
+            setResult({prob:Number(prob),live:true});
             setState("result");return;
           }
         }catch{}
@@ -322,6 +354,7 @@
         setResult({prob:simulate(inputs),live:false});
         setState("result");
       };
+
       const prob=result?.prob??0;
       const riskColor=prob>.65?"var(--red)":prob>.38?"var(--amber)":"var(--green)";
       const riskLabel=prob>.65?"High Risk":prob>.38?"Medium Risk":"Low Risk";
@@ -337,25 +370,36 @@
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px'}}>
               <div className="card" style={{display:'flex',flexDirection:'column',gap:'14px'}}>
                 <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--text3)',letterSpacing:'1.5px'}}>CUSTOMER PROFILE</div>
-                {[{k:"tenure",l:"Tenure (months)"},{k:"monthly_charges",l:"Monthly Charges ($)"}].map(({k,l})=>(
+
+                {/* Numeric fields */}
+                {[{k:"tenure",l:"Tenure (months)"},{k:"MonthlyCharges",l:"Monthly Charges ($)"}].map(({k,l})=>(
                   <div key={k}>
-                    <label style={{display:'block',fontSize:'11px',color:'var(--text2)',marginBottom:'5px',fontFamily:'var(--font-mono)'}}> {l}</label>
+                    <label style={{display:'block',fontSize:'11px',color:'var(--text2)',marginBottom:'5px',fontFamily:'var(--font-mono)'}}>{l}</label>
                     <input type="number" className="input" value={inputs[k]} onChange={e=>set(k,e.target.value)} />
                   </div>
                 ))}
+
+                {/* Select fields */}
                 {[
-                  {k:"contract",l:"Contract",opts:["Month-to-month","One year","Two year"]},
-                  {k:"internet_service",l:"Internet Service",opts:["Fiber optic","DSL","No"]},
-                  {k:"tech_support",l:"Tech Support",opts:["No","Yes"]},
-                  {k:"online_security",l:"Online Security",opts:["No","Yes"]}
+                  {k:"Contract",       l:"Contract",         opts:["Month-to-month","One year","Two year"]},
+                  {k:"InternetService",l:"Internet Service",  opts:["Fiber optic","DSL","No"]},
+                  {k:"TechSupport",    l:"Tech Support",      opts:["No","Yes","No internet service"]},
+                  {k:"OnlineSecurity", l:"Online Security",   opts:["No","Yes","No internet service"]},
+                  {k:"gender",         l:"Gender",            opts:["Male","Female"]},
+                  {k:"SeniorCitizen",  l:"Senior Citizen",    opts:["0","1"]}
                 ].map(({k,l,opts})=>(
                   <div key={k}>
-                    <label style={{display:'block',fontSize:'11px',color:'var(--text2)',marginBottom:'5px',fontFamily:'var(--font-mono)'}}> {l}</label>
+                    <label style={{display:'block',fontSize:'11px',color:'var(--text2)',marginBottom:'5px',fontFamily:'var(--font-mono)'}}>{l}</label>
                     <select className="input" style={{appearance:'none'}} value={inputs[k]} onChange={e=>set(k,e.target.value)}>
                       {opts.map(o=><option key={o}>{o}</option>)}
                     </select>
                   </div>
                 ))}
+
+                <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--text3)',paddingTop:'4px'}}>
+                  TotalCharges = tenure × MonthlyCharges (auto)
+                </div>
+
                 <button onClick={run} disabled={state==="loading"} className="btn btn-blue"
                   style={{marginTop:'6px',justifyContent:'center',opacity:state==="loading"?.7:1,width:'100%'}}>
                   {state==="loading"?"Running inference...":"→ Run Prediction"}
