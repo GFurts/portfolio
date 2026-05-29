@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gabriel Furtado — ML Engineer</title>
+  <meta name="description" content="Data Scientist & ML Engineer. Building end-to-end ML systems from business problem to production API." />
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #030712;
+      --surface: #0b1120;
+      --surface2: #111827;
+      --border: #1f2937;
+      --border2: #374151;
+      --text: #f9fafb;
+      --text2: #9ca3af;
+      --text3: #4b5563;
+      --accent: #3b82f6;
+      --cyan: #22d3ee;
+      --green: #10b981;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin  { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .fade-up { opacity: 0; animation: fadeUp .7s cubic-bezier(.16,1,.3,1) forwards; }
+    .d1{animation-delay:.05s} .d2{animation-delay:.15s} .d3{animation-delay:.25s}
+    .d4{animation-delay:.35s} .d5{animation-delay:.45s}
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(3,7,18,.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: var(--font-display); font-size: 18px; font-weight: 800;
+      letter-spacing: -.5px; color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; color: var(--text2); text-decoration: none;
+      transition: color .15s; font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 6px;
+      font-size: 13px; font-weight: 500; font-family: var(--font-body);
+      cursor: pointer; transition: all .15s;
+      text-decoration: none; border: none;
+    }
+    .btn-blue { background: var(--accent); color: #fff; }
+    .btn-blue:hover { background: #2563eb; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+    .btn-ghost:hover { border-color: var(--text2); transform: translateY(-1px); }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    .section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: var(--font-mono); font-size: 11px; color: var(--accent);
+      letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px,3vw,38px); font-weight: 700;
+      letter-spacing: -1px; margin-bottom: 48px;
+    }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 9px; border-radius: 4px;
+      font-family: var(--font-mono); font-size: 11px;
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text2); white-space: nowrap;
+    }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 22px;
+      transition: border-color .2s, transform .2s;
+    }
+    .card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+    .input {
+      width: 100%; background: rgba(0,0,0,.3);
+      border: 1px solid var(--border2); border-radius: 6px;
+      padding: 8px 12px; color: var(--text);
+      font-family: var(--font-mono); font-size: 13px;
+      outline: none; transition: border-color .15s;
+    }
+    .input:focus { border-color: var(--accent); }
+
+    .mono-link {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--text2); text-decoration: none; transition: color .15s;
+    }
+    .mono-link:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .section { padding: 64px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    /* ── DATA ───────────────────────────────────────────────────────────────── */
+
+    const PROJECTS = [
+      {
+        id: "churn",
+        name: "Churn Prediction ML",
+        problem: "Telecom companies bleed revenue when customers leave without warning. Predicting churn early enables proactive retention.",
+        description: "End-to-end ML pipeline: EDA, feature engineering, PyTorch MLP with class-imbalance handling, experiment tracking with MLflow, REST API via FastAPI, and CI/CD with GitHub Actions.",
+        stack: ["PyTorch", "FastAPI", "MLflow", "Docker", "pytest"],
+        metrics: [["AUC-ROC","0.89"],["Precision","0.82"],["Recall","0.79"]],
+        github: "https://github.com/GFurts/Churn-Prediction-ML",
+        live: "https://churn-prediction-ml-e4f1.onrender.com/docs",
+        status: "live"
+      },
+      {
+        id: "recsys",
+        name: "Recommender System",
+        problem: "Generic product listings hurt conversion. Personalized recommendations increase average order value in e-commerce.",
+        description: "Product recommendation engine using item embeddings trained with PyTorch on RetailRocket data. Reproducible DVC pipeline, MLflow tracking, and containerized with Docker.",
+        stack: ["PyTorch", "DVC", "MLflow", "Docker", "FastAPI"],
+        metrics: [["Precision@10","0.74"],["Recall@10","0.68"],["NDCG","0.71"]],
+        github: "https://github.com/GFurts/recsys-retailrocket",
+        live: "https://github.com/GFurts/recsys-retailrocket",
+        status: "live"
+      },
+      {
+        id: "datathon",
+        name: "Datathon Passos Mágicos",
+        problem: "NGOs cannot help every at-risk student. Identifying them early means resources go where they matter most.",
+        description: "Predictive model for educational dropout risk built for Passos Mágicos NGO. Includes an interactive Streamlit dashboard and full data storytelling.",
+        stack: ["Python", "XGBoost", "Streamlit", "Pandas", "Matplotlib"],
+        metrics: [],
+        github: "#",
+        live: "#",
+        status: "soon"
+      }
+    ];
+
+    const REASONING = [
+      {
+        q: "Why MLflow over Weights & Biases?",
+        a: "MLflow is self-hosted and open source — no vendor lock-in, full control over experiment data, and integrates natively into the Docker/FastAPI stack without external API keys in CI/CD pipelines.",
+        tag: "MLOps"
+      },
+      {
+        q: "Why FastAPI over Flask?",
+        a: "Automatic OpenAPI docs, native async support, and Pydantic validation out of the box. For ML APIs where input schema matters and documentation needs to be sharp, FastAPI eliminates boilerplate.",
+        tag: "Architecture"
+      },
+      {
+        q: "Why PyTorch for tabular data?",
+        a: "sklearn handles baselines well, but custom MLP architectures allow fine-grained control over dropout, batch norm, and loss weighting — critical for class-imbalanced datasets like churn.",
+        tag: "Modeling"
+      }
+    ];
+
+    const SKILLS = [
+      { cat: "Modeling",  items: ["PyTorch","scikit-learn","XGBoost","MLP","Embeddings","Feature Eng."] },
+      { cat: "MLOps",     items: ["MLflow","DVC","Docker","FastAPI","GitHub Actions"] },
+      { cat: "Data",      items: ["Pandas","NumPy","SQL","EDA","Visualization"] },
+      { cat: "Business",  items: ["CAC / ROAS","Funnel Analytics","Meta Ads","Segmentation"] }
+    ];
+
+    /* ── NAV ─────────────────────────────────────────────────────────────────── */
+
+    function Nav() {
+      return (
+        <nav>
+          <a href="#" className="logo">GF</a>
+          <ul className="nav-links">
+            {[["Projects","#projects"],["Live Demo","#demo"],["Reasoning","#reasoning"],["About","#about"],["Contact","#contact"]].map(([l,h])=>(
+              <li key={l}><a href={h}>{l}</a></li>
+            ))}
+          </ul>
+          {/* TODO: replace href with your actual CV link */}
+          <a href="#" className="btn btn-ghost btn-sm">↓ Download CV</a>
+        </nav>
+      );
+    }
+
+    /* ── HERO ────────────────────────────────────────────────────────────────── */
+
+    function Hero() {
+      return (
+        <div style={{
+          minHeight:"100vh", display:"flex", alignItems:"center", paddingTop:"60px",
+          backgroundImage:`
+            radial-gradient(ellipse 90% 55% at 50% -5%, rgba(59,130,246,.07) 0%, transparent 65%),
+            radial-gradient(circle, rgba(31,41,55,.55) 1px, transparent 1px)
+          `,
+          backgroundSize:"auto, 24px 24px"
+        }}>
+          <div className="section" style={{paddingTop:"80px",paddingBottom:"80px"}}>
+            <div className="section-label fade-up d1">Machine Learning Engineer · São Paulo, Brazil</div>
+
+            <h1 className="fade-up d2" style={{
+              fontFamily:"var(--font-display)",
+              fontSize:"clamp(56px,8vw,96px)", fontWeight:800,
+              letterSpacing:"-3px", lineHeight:1.0, marginBottom:"24px"
+            }}>
+              Gabriel<br />
+              <span style={{color:"var(--accent)"}}>Furtado</span>
+            </h1>
+
+            <p className="fade-up d2" style={{
+              fontFamily:"var(--font-mono)", fontSize:"13px",
+              color:"var(--cyan)", marginBottom:"18px", letterSpacing:".5px"
+            }}>
+              <span style={{color:"var(--text3)"}}>// </span>
+              From Marketing Analytics to Production ML
+            </p>
+
+            <p className="fade-up d3" style={{
+              fontSize:"17px", color:"var(--text2)",
+              maxWidth:"500px", lineHeight:1.75, marginBottom:"32px"
+            }}>
+              I build ML systems end-to-end — from business problem to model in production.
+              7 years reading marketing data taught me what metrics actually matter before a model runs.
+            </p>
+
+            <div className="fade-up d3" style={{display:"flex",flexWrap:"wrap",gap:"8px",marginBottom:"36px"}}>
+              {["Python","PyTorch","MLflow","FastAPI","Docker","DVC","pytest"].map(t=>(
+                <span key={t} className="tag">{t}</span>
+              ))}
+            </div>
+
+            <div className="fade-up d4" style={{display:"flex",gap:"12px",flexWrap:"wrap",marginBottom:"40px"}}>
+              <a href="#projects" className="btn btn-blue">View Projects →</a>
+              <a href="#demo"     className="btn btn-ghost">Try Live Demo</a>
+            </div>
+
+            <div className="fade-up d5" style={{display:"flex",gap:"24px"}}>
+              {[
+                ["GitHub","https://github.com/GFurts"],
+                ["LinkedIn","https://linkedin.com/in/gabriel-furtado30"],
+                ["Email","mailto:gabriel.g.furtado30@gmail.com"]
+              ].map(([l,u])=>(
+                <a key={l} href={u} target="_blank" rel="noreferrer" className="mono-link">{l} ↗</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── LIVE DEMO ───────────────────────────────────────────────────────────── */
+
+    function LiveDemo() {
+      const [state, setState] = useState("idle");
+      const [result, setResult] = useState(null);
+      const [inputs, setInputs] = useState({
+        tenure: 12,
+        monthly_charges: 65.5,
+        contract: "Month-to-month",
+        internet_service: "Fiber optic",
+        tech_support: "No",
+        online_security: "No"
+      });
+
+      const set = (k,v) => setInputs(p=>({...p,[k]:v}));
+
+      const simulate = inp => {
+        let p = 0.47;
+        if (inp.contract==="Month-to-month")  p += .22;
+        if (inp.contract==="Two year")        p -= .28;
+        if (Number(inp.tenure) < 6)           p += .16;
+        if (Number(inp.tenure) > 24)          p -= .13;
+        if (Number(inp.monthly_charges) > 80) p += .10;
+        if (inp.internet_service==="Fiber optic" && inp.tech_support==="No") p += .09;
+        if (inp.online_security==="Yes")      p -= .08;
+        return Math.max(.04, Math.min(.96, p));
+      };
+
+      const run = async () => {
+        setState("loading");
+        try {
+          // ⚠️ TODO: verify the exact endpoint path from your /docs page
+          const res = await fetch("https://churn-prediction-ml-e4f1.onrender.com/predict", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(inputs),
+            signal: AbortSignal.timeout(20000)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const prob = data.churn_probability ?? data.probability ?? data.churn_prob ?? 0.5;
+            setResult({prob, live:true});
+            setState("result"); return;
+          }
+        } catch {}
+        await new Promise(r=>setTimeout(r,1400));
+        setResult({prob: simulate(inputs), live:false});
+        setState("result");
+      };
+
+      const prob = result?.prob ?? 0;
+      const riskColor = prob>.65 ? "var(--red)" : prob>.38 ? "var(--amber)" : "var(--green)";
+      const riskLabel = prob>.65 ? "High Risk" : prob>.38 ? "Medium Risk" : "Low Risk";
+
+      return (
+        <div id="demo" style={{background:"var(--surface)",borderTop:"1px solid var(--border)",borderBottom:"1px solid var(--border)"}}>
+          <div className="section">
+            <div className="section-label">Interactive</div>
+            <h2 className="section-title">
+              Live Model Demo
+              <div style={{fontSize:"14px",fontWeight:400,color:"var(--text2)",marginTop:"6px",fontFamily:"var(--font-body)",letterSpacing:0}}>
+                Churn Prediction API — deployed on Render
+              </div>
+            </h2>
+
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px"}}>
+
+              {/* ── Inputs ── */}
+              <div className="card" style={{display:"flex",flexDirection:"column",gap:"14px"}}>
+                <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--text3)",letterSpacing:"1.5px"}}>CUSTOMER PROFILE</div>
+
+                {[{k:"tenure",l:"Tenure (months)"},{k:"monthly_charges",l:"Monthly Charges ($)"}].map(({k,l})=>(
+                  <div key={k}>
+                    <label style={{display:"block",fontSize:"11px",color:"var(--text2)",marginBottom:"5px",fontFamily:"var(--font-mono)"}}>{l}</label>
+                    <input type="number" className="input" value={inputs[k]} onChange={e=>set(k,e.target.value)} />
+                  </div>
+                ))}
+
+                {[
+                  {k:"contract",        l:"Contract",         opts:["Month-to-month","One year","Two year"]},
+                  {k:"internet_service",l:"Internet Service", opts:["Fiber optic","DSL","No"]},
+                  {k:"tech_support",    l:"Tech Support",     opts:["No","Yes"]},
+                  {k:"online_security", l:"Online Security",  opts:["No","Yes"]}
+                ].map(({k,l,opts})=>(
+                  <div key={k}>
+                    <label style={{display:"block",fontSize:"11px",color:"var(--text2)",marginBottom:"5px",fontFamily:"var(--font-mono)"}}>{l}</label>
+                    <select className="input" style={{appearance:"none"}} value={inputs[k]} onChange={e=>set(k,e.target.value)}>
+                      {opts.map(o=><option key={o}>{o}</option>)}
+                    </select>
+                  </div>
+                ))}
+
+                <button onClick={run} disabled={state==="loading"} className="btn btn-blue"
+                  style={{marginTop:"6px",justifyContent:"center",opacity:state==="loading"?.7:1,width:"100%"}}>
+                  {state==="loading" ? "Running inference..." : "→ Run Prediction"}
+                </button>
+              </div>
+
+              {/* ── Result ── */}
+              <div className="card" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",minHeight:"440px"}}>
+                {state==="idle" && (
+                  <div style={{textAlign:"center"}}>
+                    <div style={{fontSize:"52px",marginBottom:"16px",opacity:.12}}>◎</div>
+                    <p style={{color:"var(--text3)",fontFamily:"var(--font-mono)",fontSize:"12px"}}>
+                      Adjust parameters and run prediction
+                    </p>
+                  </div>
+                )}
+                {state==="loading" && (
+                  <div style={{textAlign:"center"}}>
+                    <div style={{width:"36px",height:"36px",border:"2px solid var(--border2)",borderTop:"2px solid var(--accent)",borderRadius:"50%",animation:"spin .7s linear infinite",margin:"0 auto 16px"}} />
+                    <p style={{color:"var(--text2)",fontFamily:"var(--font-mono)",fontSize:"12px",marginBottom:"6px"}}>Calling API...</p>
+                    <p style={{color:"var(--text3)",fontSize:"11px",fontFamily:"var(--font-mono)"}}>First call may take ~30s (Render cold start)</p>
+                  </div>
+                )}
+                {state==="result" && result && (
+                  <div style={{width:"100%",textAlign:"center"}}>
+                    <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--text3)",marginBottom:"28px",letterSpacing:"1.5px"}}>
+                      PREDICTION RESULT{result.live ? " · LIVE API" : " · SIMULATED"}
+                    </div>
+
+                    <div style={{position:"relative",width:"180px",height:"90px",margin:"0 auto 20px"}}>
+                      <svg viewBox="0 0 180 90" style={{width:"100%",height:"100%"}}>
+                        <path d="M12 88 A78 78 0 0 1 168 88" fill="none" stroke="#1f2937" strokeWidth="10" strokeLinecap="round" />
+                        <path d="M12 88 A78 78 0 0 1 168 88" fill="none"
+                          stroke={riskColor} strokeWidth="10" strokeLinecap="round"
+                          strokeDasharray={`${prob * 245} 245`}
+                        />
+                      </svg>
+                      <div style={{position:"absolute",bottom:0,left:"50%",transform:"translateX(-50%)",textAlign:"center"}}>
+                        <div style={{fontFamily:"var(--font-display)",fontSize:"32px",fontWeight:700,color:riskColor}}>
+                          {Math.round(prob*100)}%
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{fontFamily:"var(--font-display)",fontSize:"22px",fontWeight:600,color:riskColor,marginBottom:"6px"}}>{riskLabel}</div>
+                    <p style={{color:"var(--text3)",fontSize:"11px",fontFamily:"var(--font-mono)",marginBottom:"20px"}}>
+                      Churn probability: {(prob*100).toFixed(1)}%
+                    </p>
+                    {!result.live && (
+                      <p style={{color:"var(--text3)",fontSize:"10px",fontFamily:"var(--font-mono)",marginBottom:"16px"}}>
+                        * API offline — showing model simulation
+                      </p>
+                    )}
+                    <button onClick={()=>setState("idle")} className="btn btn-ghost btn-sm">Reset</button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── PROJECTS ────────────────────────────────────────────────────────────── */
+
+    function Projects() {
+      return (
+        <div id="projects">
+          <div className="section">
+            <div className="section-label">Selected Work</div>
+            <h2 className="section-title">Projects</h2>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:"16px"}}>
+              {PROJECTS.map(p=>(
+                <div key={p.id} className="card" style={{display:"flex",flexDirection:"column",gap:"14px",opacity:p.status==="soon"?.55:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:"8px"}}>
+                    <span style={{
+                      display:"inline-block",width:"7px",height:"7px",borderRadius:"50%",
+                      background: p.status==="live" ? "var(--green)" : "var(--text3)",
+                      boxShadow: p.status==="live" ? "0 0 0 2px rgba(16,185,129,.2)" : "none",
+                      animation: p.status==="live" ? "pulse 2s ease-in-out infinite" : "none"
+                    }} />
+                    <span style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:p.status==="live"?"var(--green)":"var(--text3)"}}>
+                      {p.status==="live" ? "LIVE" : "IN PROGRESS"}
+                    </span>
+                  </div>
+
+                  <h3 style={{fontFamily:"var(--font-display)",fontSize:"19px",fontWeight:600}}>{p.name}</h3>
+
+                  <p style={{fontSize:"12px",color:"var(--text3)",fontStyle:"italic",lineHeight:1.5}}>"{p.problem}"</p>
+                  <p style={{fontSize:"13px",color:"var(--text2)",lineHeight:1.65}}>{p.description}</p>
+
+                  {p.metrics.length>0 && (
+                    <div style={{display:"flex",gap:"16px",padding:"12px 0",borderTop:"1px solid var(--border)",borderBottom:"1px solid var(--border)"}}>
+                      {p.metrics.map(([k,v])=>(
+                        <div key={k}>
+                          <div style={{fontFamily:"var(--font-mono)",fontSize:"18px",fontWeight:600,color:"var(--accent)"}}>{v}</div>
+                          <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--text3)"}}>{k}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"6px"}}>
+                    {p.stack.map(t=><span key={t} className="tag" style={{fontSize:"10px"}}>{t}</span>)}
+                  </div>
+
+                  {p.status==="live" && (
+                    <div style={{display:"flex",gap:"16px",marginTop:"auto",paddingTop:"8px"}}>
+                      <a href={p.github} target="_blank" rel="noreferrer" className="mono-link">GitHub ↗</a>
+                      <a href={p.live}   target="_blank" rel="noreferrer" style={{fontFamily:"var(--font-mono)",fontSize:"12px",color:"var(--accent)",textDecoration:"none"}}>Live API ↗</a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── TECHNICAL REASONING ─────────────────────────────────────────────────── */
+
+    function Reasoning() {
+      return (
+        <div id="reasoning" style={{background:"var(--surface)",borderTop:"1px solid var(--border)",borderBottom:"1px solid var(--border)"}}>
+          <div className="section">
+            <div className="section-label">Architecture</div>
+            <h2 className="section-title">Technical Reasoning</h2>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:"16px"}}>
+              {REASONING.map((r,i)=>(
+                <div key={i} className="card">
+                  <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--accent)",letterSpacing:"1.5px",marginBottom:"12px"}}>{r.tag}</div>
+                  <h4 style={{fontFamily:"var(--font-display)",fontSize:"16px",fontWeight:600,marginBottom:"12px",lineHeight:1.4}}>{r.q}</h4>
+                  <p style={{fontSize:"13px",color:"var(--text2)",lineHeight:1.7}}>{r.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────────────────────────── */
+
+    function About() {
+      return (
+        <div id="about">
+          <div className="section">
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"72px",alignItems:"start"}}>
+              <div>
+                <div className="section-label">About</div>
+                <h2 style={{fontFamily:"var(--font-display)",fontSize:"clamp(28px,3vw,40px)",fontWeight:700,letterSpacing:"-1px",marginBottom:"24px"}}>
+                  From ads<br /><span style={{color:"var(--accent)"}}>to algorithms</span>
+                </h2>
+                <p style={{color:"var(--text2)",lineHeight:1.8,marginBottom:"16px"}}>
+                  7 years analyzing marketing performance data taught me one thing: metrics without predictive models are just descriptions of the past.
+                </p>
+                <p style={{color:"var(--text2)",lineHeight:1.8,marginBottom:"16px"}}>
+                  Working with CAC, ROAS, funnel segmentation, and attribution taught me to think about impact first. Before any model runs, I ask: what decision does this enable?
+                </p>
+                <p style={{color:"var(--text2)",lineHeight:1.8,marginBottom:"32px"}}>
+                  Currently completing a postgrad in Machine Learning Engineering at FIAP. Focused on production systems — not just models that work, but models that ship.
+                </p>
+                <div style={{display:"flex",flexWrap:"wrap",gap:"24px"}}>
+                  {[["BSc","Data Science · Mackenzie"],["BSc","Business Admin · UNIP"],["Postgrad","ML Engineering · FIAP"]].map(([t,d])=>(
+                    <div key={d}>
+                      <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--accent)",marginBottom:"4px"}}>{t}</div>
+                      <div style={{fontSize:"13px",color:"var(--text2)"}}>{d}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div id="skills" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"14px"}}>
+                {SKILLS.map(({cat,items})=>(
+                  <div key={cat} className="card">
+                    <div style={{fontFamily:"var(--font-mono)",fontSize:"10px",color:"var(--text3)",letterSpacing:"1.5px",marginBottom:"12px"}}>{cat.toUpperCase()}</div>
+                    <div style={{display:"flex",flexDirection:"column",gap:"5px"}}>
+                      {items.map(s=>(
+                        <span key={s} style={{fontSize:"13px",color:"var(--text2)"}}>
+                          <span style={{color:"var(--text3)",marginRight:"6px"}}>→</span>{s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── CONTACT ─────────────────────────────────────────────────────────────── */
+
+    function Contact() {
+      return (
+        <div id="contact" style={{background:"var(--surface)",borderTop:"1px solid var(--border)"}}>
+          <div className="section" style={{textAlign:"center",paddingTop:"80px",paddingBottom:"80px"}}>
+            <div className="section-label">Open to work</div>
+            <h2 style={{fontFamily:"var(--font-display)",fontSize:"clamp(40px,5vw,64px)",fontWeight:800,letterSpacing:"-2px",marginBottom:"16px",lineHeight:1.1}}>
+              Let's build<br /><span style={{color:"var(--accent)"}}>something.</span>
+            </h2>
+            <p style={{color:"var(--text2)",maxWidth:"400px",margin:"0 auto 40px",lineHeight:1.75}}>
+              Open to junior DS / MLE roles in São Paulo — hybrid or remote.
+              If you're building something with data, let's talk.
+            </p>
+            <div style={{display:"flex",gap:"12px",justifyContent:"center",flexWrap:"wrap",marginBottom:"64px"}}>
+              <a href="mailto:gabriel.g.furtado30@gmail.com" className="btn btn-blue" style={{fontSize:"15px",padding:"12px 28px"}}>
+                Send Email →
+              </a>
+              <a href="https://linkedin.com/in/gabriel-furtado30" target="_blank" rel="noreferrer" className="btn btn-ghost" style={{fontSize:"15px",padding:"12px 28px"}}>
+                LinkedIn ↗
+              </a>
+            </div>
+            <div style={{paddingTop:"32px",borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"12px"}}>
+              <span style={{fontFamily:"var(--font-display)",fontWeight:800,fontSize:"16px"}}>GF</span>
+              <span style={{fontFamily:"var(--font-mono)",fontSize:"11px",color:"var(--text3)"}}>
+                gabriel.furtado · {new Date().getFullYear()}
+              </span>
+              <div style={{display:"flex",gap:"20px"}}>
+                {[["GitHub","https://github.com/GFurts"],["LinkedIn","https://linkedin.com/in/gabriel-furtado30"]].map(([l,u])=>(
+                  <a key={l} href={u} target="_blank" rel="noreferrer" className="mono-link">{l}</a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ── APP ─────────────────────────────────────────────────────────────────── */
+
+    function App() {
+      return (
+        <>
+          <Nav />
+          <main>
+            <Hero />
+            <LiveDemo />
+            <Projects />
+            <Reasoning />
+            <About />
+            <Contact />
+          </main>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
