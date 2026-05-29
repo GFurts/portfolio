@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@400;500;600;700;800&family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,500;1,6..12,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -19,8 +19,9 @@
       --text:#f9fafb;--text2:#9ca3af;--text3:#4b5563;
       --accent:#3b82f6;--cyan:#22d3ee;--green:#10b981;
       --red:#ef4444;--amber:#f59e0b;
-      --font-display:'Syne',sans-serif;
-      --font-body:'DM Sans',sans-serif;
+      --font-display:'Raleway',sans-serif;
+      --font-hero:'Bebas Neue',sans-serif;
+      --font-body:'Nunito Sans',sans-serif;
       --font-mono:'JetBrains Mono',monospace;
     }
     html{scroll-behavior:smooth}
@@ -158,7 +159,7 @@
         <nav>
           <a href="#" className="logo">GF</a>
           <ul className="nav-links">
-            {[["Projects","#projects"],["Live Demo","#demo"],["Reasoning","#reasoning"],["About","#about"],["Contact","#contact"]].map(([l,h])=>(
+            {[["Projects","#projects"],["Live Demo","#demo"],["Process","#reasoning"],["About","#about"],["Contact","#contact"]].map(([l,h])=>(
               <li key={l}><a href={h}>{l}</a></li>
             ))}
           </ul>
@@ -185,8 +186,8 @@
         <div style={{
           minHeight:'100vh',display:'flex',alignItems:'center',paddingTop:'60px',
           backgroundImage:`
-            radial-gradient(ellipse 100% 60% at 60% -5%, rgba(59,130,246,.08) 0%, transparent 60%),
-            radial-gradient(circle, rgba(31,41,55,.5) 1px, transparent 1px)
+            radial-gradient(ellipse 100% 60% at 60% -5%, rgba(59,130,246,.06) 0%, transparent 60%),
+            radial-gradient(circle, rgba(31,41,55,.25) 1px, transparent 1px)
           `,
           backgroundSize:'auto, 24px 24px'
         }}>
@@ -198,9 +199,9 @@
                 <div className="section-label fade-up d1">Machine Learning Engineer · São Paulo, Brazil</div>
 
                 <h1 className="fade-up d2" style={{
-                  fontFamily:'var(--font-display)',
-                  fontSize:'clamp(44px,5.5vw,72px)',fontWeight:800,
-                  letterSpacing:'-2px',lineHeight:1.05,marginBottom:'20px'
+                  fontFamily:'var(--font-hero)',
+                  fontSize:'clamp(52px,6vw,82px)',fontWeight:400,
+                  letterSpacing:'3px',lineHeight:1.05,marginBottom:'20px'
                 }}>
                   Gabriel<br/>
                   <span style={{color:'var(--accent)'}}>Furtado</span>
@@ -212,8 +213,7 @@
                 </p>
 
                 <p className="fade-up d3" style={{fontSize:'16px',color:'var(--text2)',maxWidth:'480px',lineHeight:1.75,marginBottom:'28px'}}>
-                  I build ML systems end-to-end — from business problem to model in production.
-                  7 years reading marketing data taught me what metrics actually matter before a model runs.
+                  Machine Learning Engineer focused on real business problems, reproducible pipelines and production-ready APIs.
                 </p>
 
                 <div className="fade-up d3" style={{display:'flex',flexWrap:'wrap',gap:'8px',marginBottom:'32px'}}>
@@ -224,7 +224,7 @@
 
                 <div className="fade-up d4" style={{display:'flex',gap:'12px',flexWrap:'wrap',marginBottom:'36px'}}>
                   <a href="#projects" className="btn btn-blue">Ver Projetos →</a>
-                  <a href="#demo" className="btn btn-ghost">Try Live Demo</a>
+                  <a href="#demo" className="btn btn-ghost">Live Demo</a>
                 </div>
 
                 <div className="fade-up d5" style={{display:'flex',gap:'24px'}}>
@@ -473,22 +473,28 @@
               <div>
                 <div className="section-label">About</div>
                 <h2 style={{fontFamily:'var(--font-display)',fontSize:'clamp(28px,3vw,40px)',fontWeight:700,letterSpacing:'-1px',marginBottom:'24px'}}>
-                  From ads<br/><span style={{color:'var(--accent)'}}>to algorithms</span>
+                  A deliberate<br/><span style={{color:'var(--accent)'}}>learning path</span>
                 </h2>
                 <p style={{color:'var(--text2)',lineHeight:1.8,marginBottom:'16px'}}>
-                  7 years analyzing marketing performance data taught me one thing: metrics without predictive models are just descriptions of the past.
+                  My academic path wasn't linear — it was intentional. A BSc in Data Science at Mackenzie for technical depth, paired with Business Administration at UNIP to understand how organizations actually make decisions with data.
                 </p>
                 <p style={{color:'var(--text2)',lineHeight:1.8,marginBottom:'16px'}}>
-                  Working with CAC, ROAS, funnel segmentation, and attribution taught me to think about impact first. Before any model runs, I ask: what decision does this enable?
+                  That foundation led to a specialization in Data Analytics at FIAP — moving from analysis into production thinking. From there, the next step was clear: Machine Learning Engineering, focused on the full model lifecycle.
                 </p>
                 <p style={{color:'var(--text2)',lineHeight:1.8,marginBottom:'32px'}}>
-                  Currently completing a postgrad in Machine Learning Engineering at FIAP. Focused on production systems — not just models that work, but models that ship.
+                  Currently completing my second FIAP specialization in ML Engineering: training, serving, versioning, and monitoring models at scale. Four degrees, one direction.
                 </p>
-                <div style={{display:'flex',flexWrap:'wrap',gap:'24px'}}>
-                  {[["BSc","Data Science · Mackenzie"],["BSc","Business Admin · UNIP"],["Postgrad","ML Engineering · FIAP"]].map(([t,d])=>(
-                    <div key={d}>
+                <div style={{display:'flex',flexWrap:'wrap',gap:'12px'}}>
+                  {[
+                    ["BSc","Data Science","Mackenzie","2024"],
+                    ["BSc","Business Admin","UNIP","2023"],
+                    ["Postgrad","Data Analytics","FIAP","2025"],
+                    ["Postgrad","ML Engineering","FIAP","2027 ↗"]
+                  ].map(([t,d,inst,year])=>(
+                    <div key={d} style={{background:'var(--surface2)',border:'1px solid var(--border)',borderRadius:'8px',padding:'12px 14px',minWidth:'130px'}}> 
                       <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--accent)',marginBottom:'4px'}}>{t}</div>
-                      <div style={{fontSize:'13px',color:'var(--text2)'}}>{d}</div>
+                      <div style={{fontSize:'13px',color:'var(--text)',fontWeight:500,marginBottom:'2px'}}>{d}</div>
+                      <div style={{fontSize:'11px',color:'var(--text3)'}}>{inst} · {year}</div>
                     </div>
                   ))}
                 </div>
