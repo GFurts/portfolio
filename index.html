@@ -124,13 +124,15 @@
         status:"live"
       },
       {
-        id:"datathon",name:"Educational Risk Prediction",
-        problem:"NGOs cannot help every at-risk student. Identifying them early means resources go where they matter most.",
-        description:"Predictive model for educational dropout risk built for Passos Mágicos NGO. Includes an interactive Streamlit dashboard and full data storytelling.",
-        stack:["Python","XGBoost","Streamlit","Pandas","Matplotlib"],
-        metrics:[],
-        github:"#",live:"#",status:"soon"
-      }
+  id:"datathon",name:"Educational Risk Prediction",
+  problem:"NGOs cannot help every at-risk student. Identifying them early means resources go where they matter most.",
+  description:"Predictive model for educational dropout risk built for Passos Mágicos NGO. XGBoost with threshold tuning, full EDA, and interactive Streamlit dashboard.",
+  stack:["Python","XGBoost","Streamlit","Pandas","scikit-learn"],
+  metrics:[["ROC-AUC","0.648"],["Recall","0.89"],["Threshold","0.4"]],
+  github:"https://github.com/GFurts/educational-risk-prediction",
+  live:"https://educational-risk-prediction.streamlit.app",
+  status:"live"
+}
     ];
 
     const REASONING = [
