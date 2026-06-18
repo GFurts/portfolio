@@ -523,7 +523,7 @@
           <div className="section">
             <div className="section-label">Selected Work</div>
             <h2 className="section-title">Projects</h2>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'16px'}}>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:'16px'}}>
               {PROJECTS.map(p=>(
                 <div key={p.id} className="card" style={{display:'flex',flexDirection:'column',gap:'14px',opacity:p.status==="soon"?.55:1}}>
                   <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
