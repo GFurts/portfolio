@@ -1,156 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recommender System — Gabriel Furtado</title>
-  <meta name="description" content="Case técnico bilíngue do Sistema de Recomendação RetailRocket: PyTorch embeddings, métricas de ranking, DVC, MLflow, FastAPI e Docker." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@400;500;600;700;800&family=Nunito+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    :root{--bg:#030712;--surface:#0b1120;--surface2:#111827;--border:#1f2937;--border2:#374151;--text:#f9fafb;--text2:#9ca3af;--text3:#4b5563;--accent:#3b82f6;--cyan:#22d3ee;--green:#10b981;--font-display:'Raleway',sans-serif;--font-hero:'Bebas Neue',sans-serif;--font-body:'Nunito Sans',sans-serif;--font-mono:'JetBrains Mono',monospace}
-    html{scroll-behavior:smooth} body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;-webkit-font-smoothing:antialiased} a{color:inherit}
-    nav{position:fixed;top:0;left:0;right:0;z-index:30;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(3,7,18,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-    .nav-group{display:flex;align-items:center;gap:20px}.logo{font-family:var(--font-display);font-weight:800;text-decoration:none}.nav-back{font-family:var(--font-mono);font-size:12px;color:var(--text2);text-decoration:none}.nav-back:hover{color:var(--text)}
-    .lang{display:flex;gap:4px;font-family:var(--font-mono);font-size:12px}.lang button{background:none;border:0;color:var(--text3);font:inherit;cursor:pointer;padding:3px 4px}.lang button.active{color:var(--cyan);font-weight:600}.lang span{color:var(--border2)}
-    .wrap{max-width:1000px;margin:auto;padding:0 48px}
-    .hero{padding:150px 0 80px;background-image:radial-gradient(ellipse 80% 55% at 72% 0%,rgba(34,211,238,.11),transparent 60%),radial-gradient(ellipse 55% 45% at 15% 25%,rgba(59,130,246,.08),transparent 65%),radial-gradient(circle,rgba(31,41,55,.25) 1px,transparent 1px);background-size:auto,auto,24px 24px}
-    .label{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}.hero h1{font-family:var(--font-hero);font-size:clamp(54px,8vw,92px);font-weight:400;letter-spacing:2px;line-height:.95}.hero h1 span{color:var(--cyan)}
-    .lead{font-size:18px;color:var(--text2);max-width:760px;margin-top:24px;line-height:1.8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}.btn{display:inline-flex;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:13px;border:1px solid var(--border2)}.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-    .metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface)}.metric{padding:28px;text-align:center;border-right:1px solid var(--border)}.metric:last-child{border-right:0}.metric strong{display:block;font-family:var(--font-mono);font-size:30px;color:var(--cyan)}.metric span{font-family:var(--font-mono);font-size:10px;color:var(--text3)}
-    section{padding:72px 0;border-bottom:1px solid var(--border)} h2{font-family:var(--font-display);font-size:32px;letter-spacing:-.8px;margin-bottom:22px}.copy{color:var(--text2);font-size:15px;line-height:1.85;max-width:790px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:26px}.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:22px}.card h3{font-family:var(--font-display);font-size:17px;margin-bottom:10px}.card p{font-size:13px;color:var(--text2);line-height:1.7}.tagrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:22px}.tag{font-family:var(--font-mono);font-size:10px;color:var(--text2);padding:5px 9px;border:1px solid var(--border);background:var(--surface2);border-radius:4px}
-    .decision{border-left:3px solid var(--cyan);padding:20px 22px;background:rgba(34,211,238,.045);margin-top:24px}.decision strong{font-family:var(--font-display);display:block;margin-bottom:6px}.decision p{color:var(--text2);font-size:14px}
-    .steps{margin-top:24px}.step{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--border)}.step:last-child{border-bottom:0}.num{font-family:var(--font-mono);font-size:12px;color:var(--cyan)}.step h3{font-family:var(--font-display);font-size:16px;margin-bottom:5px}.step p{color:var(--text2);font-size:13px}
-    .latent{height:150px;border:1px solid var(--border);border-radius:12px;background:radial-gradient(circle at 22% 38%,rgba(34,211,238,.12),transparent 16%),radial-gradient(circle at 75% 60%,rgba(59,130,246,.13),transparent 18%),var(--surface);position:relative;overflow:hidden;margin-top:28px}
-    .latent::before,.latent::after{content:"";position:absolute;height:1px;left:10%;right:10%;top:45%;background:linear-gradient(90deg,transparent,rgba(34,211,238,.55),rgba(59,130,246,.42),transparent);transform:rotate(-7deg)}.latent::after{top:62%;transform:rotate(6deg);opacity:.7}
-    .node{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px rgba(34,211,238,.55)}.node.b{background:var(--accent);box-shadow:0 0 14px rgba(59,130,246,.5)}
-    footer{padding:50px 0;color:var(--text3);font-family:var(--font-mono);font-size:11px;text-align:center}
-    @media(max-width:700px){nav{padding:0 20px}.nav-back{display:none}.wrap{padding:0 20px}.hero{padding-top:120px}.metrics{grid-template-columns:1fr}.metric{border-right:0;border-bottom:1px solid var(--border)}.metric:last-child{border-bottom:0}.grid{grid-template-columns:1fr}}
-  </style>
-</head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GF — Recommender System Case</title>
+<meta name="description" content="Case técnico do Sistema de Recomendação RetailRocket de Gabriel Furtado.">
+<meta name="theme-color" content="#07111f"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%2307111f'/%3E%3Crect x='3' y='3' width='58' height='58' rx='6' fill='none' stroke='%233b82f6' stroke-width='2'/%3E%3Ctext x='32' y='40' font-family='Arial,sans-serif' font-size='24' font-weight='700' text-anchor='middle' fill='white'%3EGF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}:root{--bg:#07111f;--surface:#0d1b2d;--line:rgba(148,163,184,.16);--line2:rgba(148,163,184,.28);--text:#f7f9fc;--muted:#a3afbf;--faint:#64748b;--blue:#4f8cff;--cyan:#4dd8e7;--max:1000px;--display:'Manrope',sans-serif;--body:'DM Sans',sans-serif;--mono:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth}body{background:radial-gradient(800px 500px at 80% 0%,rgba(79,140,255,.10),transparent 60%),var(--bg);color:var(--text);font-family:var(--body);line-height:1.7;-webkit-font-smoothing:antialiased}a{color:inherit}.shell{width:min(var(--max),calc(100% - 56px));margin:auto}
+header{height:74px;position:fixed;inset:0 0 auto;z-index:20;background:rgba(7,17,31,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}nav{height:74px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;text-decoration:none}.mark{width:34px;height:34px;border:1px solid rgba(79,140,255,.55);border-radius:8px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px}.back{font-family:var(--mono);font-size:10px;color:var(--muted)}.lang{display:flex;gap:5px;align-items:center;font-family:var(--mono);font-size:10px;color:var(--faint)}.lang button{border:0;background:none;color:var(--faint);cursor:pointer;padding:5px}.lang button.active{color:#76a7ff}
+.hero{padding:156px 0 92px}.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#76a7ff}h1{font-family:var(--display);font-size:clamp(58px,9vw,102px);line-height:.93;letter-spacing:-.065em;font-weight:650;margin-top:19px;max-width:900px}h1 span{color:var(--cyan)}.lead{font-size:18px;color:var(--muted);max-width:760px;margin-top:30px;line-height:1.85}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}.btn{display:inline-flex;align-items:center;min-height:42px;padding:0 17px;border:1px solid var(--line2);border-radius:10px;text-decoration:none;font-size:12px;font-weight:600}.primary{background:white;color:#08111f;border-color:white}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.metric{padding:30px;border-right:1px solid var(--line)}.metric:last-child{border-right:0}.metric strong{font-family:var(--display);font-size:34px;color:var(--cyan);letter-spacing:-.04em}.metric span{display:block;font-family:var(--mono);font-size:9px;color:var(--faint);margin-top:3px}
+section{padding:92px 0;border-bottom:1px solid var(--line)}.head{display:grid;grid-template-columns:170px 1fr;gap:40px;margin-bottom:38px}.head h2{font-family:var(--display);font-size:clamp(31px,4vw,48px);letter-spacing:-.04em;line-height:1.08}.copy{color:var(--muted);max-width:760px;font-size:15px;line-height:1.85}.decision{margin-top:28px;padding:22px 24px;border-left:2px solid var(--cyan);background:rgba(77,216,231,.035)}.decision b{display:block;font-size:13px;margin-bottom:6px}.decision p{font-size:13px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:28px}.card{padding:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.card h3{font-family:var(--display);font-size:17px;margin-bottom:9px}.card p{font-size:12px;color:var(--muted)}.steps{border-top:1px solid var(--line)}.step{display:grid;grid-template-columns:50px 1fr;gap:14px;padding:22px 0;border-bottom:1px solid var(--line)}.num{font-family:var(--mono);font-size:10px;color:var(--cyan)}.step h3{font-size:14px;margin-bottom:4px}.step p{font-size:12px;color:var(--muted)}footer{padding:34px 0;font-family:var(--mono);font-size:9px;color:var(--faint);text-align:center}
+@media(max-width:700px){.shell{width:calc(100% - 30px)}.head{grid-template-columns:1fr;gap:12px}.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.metric{border-right:0;border-bottom:1px solid var(--line)}.metric:last-child{border-bottom:0}}
+</style></head>
 <body>
-  <nav>
-    <a class="logo" href="./index.html">GF</a>
-    <div class="nav-group">
-      <a class="nav-back" id="backLink" href="./index.html#projects">← Voltar ao portfólio</a>
-      <div class="lang"><button id="ptBtn" class="active">PT</button><span>/</span><button id="enBtn">EN</button></div>
-    </div>
-  </nav>
-
-  <div id="app"></div>
-
-  <script>
-    const C = {
-      pt:{
-        back:"← Voltar ao portfólio",
-        caseLabel:"Case Técnico · Sistema de Recomendação",
-        h1a:"Sistema de",h1b:"Recomendação",
-        lead:"Motor de recomendação para e-commerce construído sobre dados do RetailRocket, com embeddings em PyTorch, avaliação por métricas de ranking e um pipeline reprodutível com DVC, MLflow, FastAPI e Docker.",
-        live:"API ao Vivo ↗",github:"GitHub ↗",demo:"Testar na landing →",
-        s1label:"01 · Problema",s1title:"Personalização é um problema de ranking, não só de classificação",
-        s1copy:"Listagens genéricas reduzem a relevância da experiência de compra. O objetivo do projeto é produzir recomendações personalizadas a partir do histórico de interações, priorizando itens com maior relevância estimada para cada usuário.",
-        s2label:"02 · Representações",s2title:"Embeddings para aprender relações entre usuários e itens",
-        s2copy:"O modelo utiliza embeddings de usuário e item treinados com PyTorch. Essas representações densas permitem aprender padrões latentes das interações em vez de tratar identificadores como simples números sem relação entre si.",
-        decisionTitle:"Decisão de modelagem",
-        decisionCopy:"O foco não é apenas prever uma classe, mas aprender representações úteis para ordenar itens. Por isso, a avaliação precisa refletir qualidade de ranking e não apenas métricas tradicionais de classificação.",
-        s3label:"03 · Avaliação",s3title:"Métricas próprias para recomendação",
-        precision:"Precision@10 mede quanto do Top 10 recomendado é relevante.",
-        recall:"Recall@10 mede quanto dos itens relevantes o Top 10 consegue recuperar.",
-        ndcg:"NDCG considera também a posição dos itens relevantes no ranking.",
-        s4label:"04 · Reprodutibilidade",s4title:"Pipeline reproduzível e rastreável",
-        step1t:"DVC · 4 estágios",step1p:"Pipeline de dados e treinamento estruturado em quatro estágios reproduzíveis.",
-        step2t:"MLflow Model Registry",step2p:"Rastreamento de experimentos e organização das versões do modelo.",
-        step3t:"pytest",step3p:"11 testes automatizados aprovados para validar partes do fluxo.",
-        step4t:"Docker",step4p:"Containerização do serviço para padronizar o ambiente de execução.",
-        step5t:"FastAPI",step5p:"API REST documentada para servir recomendações em produção.",
-        s5label:"05 · Resultado",s5title:"Um case de ML Engineering, não apenas de modelagem",
-        s5copy:"O projeto conecta representação, ranking, reprodutibilidade e serving. Isso permite discutir em uma entrevista não só a arquitetura do modelo, mas também como os dados fluem, como os experimentos são rastreados e como o recomendador chega até uma API utilizável.",
-        card1t:"Ranking",card1p:"Precision@10 0.74, Recall@10 0.68 e NDCG 0.71 no conjunto de avaliação.",
-        card2t:"Produção",card2p:"DVC, MLflow, Docker, FastAPI e testes automatizados compondo o fluxo de ML Engineering."
-      },
-      en:{
-        back:"← Back to portfolio",
-        caseLabel:"Technical Case Study · Recommender System",
-        h1a:"Recommender",h1b:"System",
-        lead:"E-commerce recommendation engine built on RetailRocket data, using PyTorch embeddings, ranking-based evaluation and a reproducible pipeline with DVC, MLflow, FastAPI and Docker.",
-        live:"Live API ↗",github:"GitHub ↗",demo:"Try it on the landing page →",
-        s1label:"01 · Problem",s1title:"Personalization is a ranking problem, not only a classification problem",
-        s1copy:"Generic product listings reduce shopping relevance. The project aims to generate personalized recommendations from interaction history, prioritizing items estimated to be more relevant for each user.",
-        s2label:"02 · Representations",s2title:"Embeddings to learn user–item relationships",
-        s2copy:"The model uses user and item embeddings trained with PyTorch. These dense representations allow the system to learn latent interaction patterns instead of treating identifiers as unrelated numeric values.",
-        decisionTitle:"Modeling decision",
-        decisionCopy:"The goal is not simply to predict a class, but to learn useful representations for ordering items. Evaluation therefore needs to reflect ranking quality rather than relying only on traditional classification metrics.",
-        s3label:"03 · Evaluation",s3title:"Metrics designed for recommendation",
-        precision:"Precision@10 measures how much of the recommended Top 10 is relevant.",
-        recall:"Recall@10 measures how much of the relevant set the Top 10 can retrieve.",
-        ndcg:"NDCG also accounts for where relevant items appear in the ranking.",
-        s4label:"04 · Reproducibility",s4title:"A reproducible and traceable pipeline",
-        step1t:"DVC · 4 stages",step1p:"Data and training workflow structured as four reproducible pipeline stages.",
-        step2t:"MLflow Model Registry",step2p:"Experiment tracking and organization of model versions.",
-        step3t:"pytest",step3p:"11 automated tests passing to validate parts of the workflow.",
-        step4t:"Docker",step4p:"Service containerization to standardize the runtime environment.",
-        step5t:"FastAPI",step5p:"Documented REST API for serving recommendations in production.",
-        s5label:"05 · Outcome",s5title:"An ML Engineering case, not just a modeling exercise",
-        s5copy:"The project connects representation learning, ranking, reproducibility and serving. In an interview, it supports discussion not only about model architecture but also about data flow, experiment tracking and how the recommender becomes a usable API.",
-        card1t:"Ranking",card1p:"Precision@10 0.74, Recall@10 0.68 and NDCG 0.71 on the evaluation set.",
-        card2t:"Production",card2p:"DVC, MLflow, Docker, FastAPI and automated tests forming the ML Engineering workflow."
-      }
-    };
-
-    let lang="pt";
-    const app=document.getElementById("app");
-    const back=document.getElementById("backLink");
-    const ptBtn=document.getElementById("ptBtn");
-    const enBtn=document.getElementById("enBtn");
-
-    function render(){
-      const t=C[lang];
-      document.documentElement.lang=lang==="pt"?"pt-BR":"en";
-      back.textContent=t.back;
-      ptBtn.classList.toggle("active",lang==="pt");
-      enBtn.classList.toggle("active",lang==="en");
-      app.innerHTML=`
-        <header class="hero"><div class="wrap">
-          <div class="label">${t.caseLabel}</div>
-          <h1>${t.h1a}<br><span>${t.h1b}</span></h1>
-          <p class="lead">${t.lead}</p>
-          <div class="actions">
-            <a class="btn primary" href="https://recsys-retailrocket.onrender.com/docs" target="_blank" rel="noreferrer">${t.live}</a>
-            <a class="btn" href="https://github.com/GFurts/recsys-retailrocket" target="_blank" rel="noreferrer">${t.github}</a>
-            <a class="btn" href="./index.html#demo">${t.demo}</a>
-          </div>
-          <div class="latent" aria-hidden="true">
-            <span class="node" style="left:12%;top:28%"></span><span class="node b" style="left:26%;top:66%"></span>
-            <span class="node" style="left:43%;top:32%"></span><span class="node b" style="left:58%;top:62%"></span>
-            <span class="node" style="left:74%;top:24%"></span><span class="node b" style="left:86%;top:68%"></span>
-          </div>
-        </div></header>
-        <div class="metrics">
-          <div class="metric"><strong>0.74</strong><span>PRECISION@10</span></div>
-          <div class="metric"><strong>0.68</strong><span>RECALL@10</span></div>
-          <div class="metric"><strong>0.71</strong><span>NDCG</span></div>
-        </div>
-        <main>
-          <section><div class="wrap"><div class="label">${t.s1label}</div><h2>${t.s1title}</h2><p class="copy">${t.s1copy}</p></div></section>
-          <section><div class="wrap"><div class="label">${t.s2label}</div><h2>${t.s2title}</h2><p class="copy">${t.s2copy}</p><div class="decision"><strong>${t.decisionTitle}</strong><p>${t.decisionCopy}</p></div><div class="tagrow"><span class="tag">PyTorch</span><span class="tag">User Embeddings</span><span class="tag">Item Embeddings</span><span class="tag">RetailRocket</span></div></div></section>
-          <section><div class="wrap"><div class="label">${t.s3label}</div><h2>${t.s3title}</h2><div class="grid"><div class="card"><h3>Precision@10</h3><p>${t.precision}</p></div><div class="card"><h3>Recall@10</h3><p>${t.recall}</p></div><div class="card"><h3>NDCG</h3><p>${t.ndcg}</p></div><div class="card"><h3>Top-K</h3><p>${lang==="pt"?"O produto final do modelo é um ranking de itens, não apenas uma probabilidade isolada.":"The model output is an item ranking, not just an isolated probability."}</p></div></div></div></section>
-          <section><div class="wrap"><div class="label">${t.s4label}</div><h2>${t.s4title}</h2><div class="steps">
-            <div class="step"><div class="num">01</div><div><h3>${t.step1t}</h3><p>${t.step1p}</p></div></div>
-            <div class="step"><div class="num">02</div><div><h3>${t.step2t}</h3><p>${t.step2p}</p></div></div>
-            <div class="step"><div class="num">03</div><div><h3>${t.step3t}</h3><p>${t.step3p}</p></div></div>
-            <div class="step"><div class="num">04</div><div><h3>${t.step4t}</h3><p>${t.step4p}</p></div></div>
-            <div class="step"><div class="num">05</div><div><h3>${t.step5t}</h3><p>${t.step5p}</p></div></div>
-          </div></div></section>
-          <section><div class="wrap"><div class="label">${t.s5label}</div><h2>${t.s5title}</h2><p class="copy">${t.s5copy}</p><div class="grid"><div class="card"><h3>${t.card1t}</h3><p>${t.card1p}</p></div><div class="card"><h3>${t.card2t}</h3><p>${t.card2p}</p></div></div></div></section>
-        </main>
-        <footer><div class="wrap">Gabriel Furtado · Data Scientist & ML Engineer · 2026</div></footer>
-      `;
-    }
-    ptBtn.onclick=()=>{lang="pt";render()};
-    enBtn.onclick=()=>{lang="en";render()};
-    render();
-  </script>
-</body>
-</html>
+<header><nav class="shell"><a class="brand" href="./index.html"><span class="mark">GF</span><span class="back" id="back">← Voltar ao site</span></a><div class="lang"><button id="pt" class="active">PT</button><span>/</span><button id="en">EN</button></div></nav></header>
+<main id="app"></main><footer>Gabriel Furtado · Data Scientist & ML Engineer · <span id="year"></span></footer>
+<script>
+const C={
+pt:{
+back:"← Voltar ao site",eyebrow:"Case técnico · Sistema de Recomendação",h1a:"Sistema de",h1b:"Recomendação",
+lead:"Motor de recomendação para e-commerce construído sobre dados do RetailRocket, com embeddings em PyTorch, avaliação por métricas de ranking e um pipeline reproduzível com DVC, MLflow, FastAPI e Docker.",
+live:"API ao vivo ↗",github:"GitHub ↗",lab:"Testar no Live Lab →",
+p1e:"01 · Problema",p1h:"Personalização é um problema de ranking.",p1c:"Listagens genéricas reduzem a relevância da experiência de compra. O objetivo é transformar histórico de interações em um ranking personalizado de itens para cada usuário.",
+p2e:"02 · Modelagem",p2h:"Embeddings para aprender relações latentes.",p2c:"Usuários e itens são representados em espaços densos aprendidos pelo modelo. Isso permite capturar padrões de interação que IDs brutos não carregam.",
+dec:"Decisão de modelagem",decc:"O produto final é uma lista ordenada de itens. Por isso, o sucesso do modelo precisa ser medido com métricas de ranking — e não apenas métricas tradicionais de classificação.",
+p3e:"03 · Avaliação",p3h:"Métricas que refletem o produto final.",prec:"Quanto do Top 10 recomendado é relevante.",rec:"Quanto dos itens relevantes o Top 10 consegue recuperar.",ndcg:"Leva em conta também a posição dos itens relevantes no ranking.",
+p4e:"04 · Engenharia",p4h:"Do experimento ao serviço.",s1:"Pipeline DVC em 4 estágios reproduzíveis.",s2:"MLflow para tracking e organização de versões.",s3:"11 testes automatizados com pytest.",s4:"Docker para padronizar o ambiente.",s5:"FastAPI para servir recomendações via REST.",
+p5e:"05 · Por que importa",p5h:"Um case de ML Engineering, não só de modelagem.",p5c:"O projeto permite discutir representação, ranking, dados, versionamento, experimentação, testes, containerização e serving como partes de um único sistema."
+},
+en:{
+back:"← Back to site",eyebrow:"Technical case · Recommender System",h1a:"Recommender",h1b:"System",
+lead:"E-commerce recommendation engine built on RetailRocket data, with PyTorch embeddings, ranking-based evaluation and a reproducible pipeline using DVC, MLflow, FastAPI and Docker.",
+live:"Live API ↗",github:"GitHub ↗",lab:"Try it in the Live Lab →",
+p1e:"01 · Problem",p1h:"Personalization is a ranking problem.",p1c:"Generic listings reduce shopping relevance. The goal is to turn interaction history into a personalized ranking of items for each user.",
+p2e:"02 · Modeling",p2h:"Embeddings to learn latent relationships.",p2c:"Users and items are represented as dense vectors learned by the model. This captures interaction patterns that raw IDs cannot express.",
+dec:"Modeling decision",decc:"The final product is an ordered list of items. Model success therefore needs ranking metrics — not only traditional classification metrics.",
+p3e:"03 · Evaluation",p3h:"Metrics that reflect the final product.",prec:"How much of the recommended Top 10 is relevant.",rec:"How much of the relevant set the Top 10 retrieves.",ndcg:"Also accounts for where relevant items appear in the ranking.",
+p4e:"04 · Engineering",p4h:"From experiment to service.",s1:"A reproducible 4-stage DVC pipeline.",s2:"MLflow for experiment tracking and model organization.",s3:"11 automated tests with pytest.",s4:"Docker to standardize the runtime environment.",s5:"FastAPI to serve recommendations over REST.",
+p5e:"05 · Why it matters",p5h:"An ML Engineering case, not just a modeling exercise.",p5c:"The project supports discussion about representation learning, ranking, data, versioning, experimentation, tests, containers and serving as parts of one system."
+}};
+let lang=localStorage.getItem("gf-lang")||"pt";if(!C[lang])lang="pt";
+const app=document.getElementById("app"),back=document.getElementById("back"),pt=document.getElementById("pt"),en=document.getElementById("en");
+function render(){
+const t=C[lang];document.documentElement.lang=lang==="pt"?"pt-BR":"en";back.textContent=t.back;pt.classList.toggle("active",lang==="pt");en.classList.toggle("active",lang==="en");
+app.innerHTML=`<section class="hero"><div class="shell"><div class="eyebrow">${t.eyebrow}</div><h1>${t.h1a}<br><span>${t.h1b}</span></h1><p class="lead">${t.lead}</p><div class="actions"><a class="btn primary" href="https://recsys-retailrocket.onrender.com/docs" target="_blank">${t.live}</a><a class="btn" href="https://github.com/GFurts/recsys-retailrocket" target="_blank">${t.github}</a><a class="btn" href="./index.html#lab">${t.lab}</a></div></div></section>
+<div class="metrics"><div class="metric"><strong>0.74</strong><span>PRECISION@10</span></div><div class="metric"><strong>0.68</strong><span>RECALL@10</span></div><div class="metric"><strong>0.71</strong><span>NDCG</span></div></div>
+<section><div class="shell"><div class="head"><div class="eyebrow">${t.p1e}</div><h2>${t.p1h}</h2></div><p class="copy">${t.p1c}</p></div></section>
+<section><div class="shell"><div class="head"><div class="eyebrow">${t.p2e}</div><h2>${t.p2h}</h2></div><p class="copy">${t.p2c}</p><div class="decision"><b>${t.dec}</b><p>${t.decc}</p></div></div></section>
+<section><div class="shell"><div class="head"><div class="eyebrow">${t.p3e}</div><h2>${t.p3h}</h2></div><div class="grid"><div class="card"><h3>Precision@10</h3><p>${t.prec}</p></div><div class="card"><h3>Recall@10</h3><p>${t.rec}</p></div><div class="card"><h3>NDCG</h3><p>${t.ndcg}</p></div></div></div></section>
+<section><div class="shell"><div class="head"><div class="eyebrow">${t.p4e}</div><h2>${t.p4h}</h2></div><div class="steps"><div class="step"><div class="num">01</div><div><h3>DVC</h3><p>${t.s1}</p></div></div><div class="step"><div class="num">02</div><div><h3>MLflow</h3><p>${t.s2}</p></div></div><div class="step"><div class="num">03</div><div><h3>pytest</h3><p>${t.s3}</p></div></div><div class="step"><div class="num">04</div><div><h3>Docker</h3><p>${t.s4}</p></div></div><div class="step"><div class="num">05</div><div><h3>FastAPI</h3><p>${t.s5}</p></div></div></div></div></section>
+<section><div class="shell"><div class="head"><div class="eyebrow">${t.p5e}</div><h2>${t.p5h}</h2></div><p class="copy">${t.p5c}</p></div></section>`;
+}
+pt.onclick=()=>{lang="pt";localStorage.setItem("gf-lang",lang);render()};en.onclick=()=>{lang="en";localStorage.setItem("gf-lang",lang);render()};document.getElementById("year").textContent=new Date().getFullYear();render();
+</script></body></html>
