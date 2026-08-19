@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gabriel Furtado — Data Scientist & ML Engineer</title>
-  <meta name="description" content="Data Scientist & ML Engineer. Building end-to-end ML systems from business problem to production API." />
+  <meta name="description" content="Cientista de Dados e Machine Learning Engineer. Soluções de ML end-to-end, do problema de negócio à API em produção." />
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
@@ -92,12 +92,50 @@
       --start:0deg;--r:170px;
     }
 
+
+    /* Featured project: same identity, stronger hierarchy */
+    .featured-card{
+      position:relative;overflow:hidden;
+      border:1px solid rgba(34,211,238,.28) !important;
+      background:
+        radial-gradient(circle at 88% 18%,rgba(34,211,238,.10),transparent 28%),
+        linear-gradient(135deg,rgba(34,211,238,.025),rgba(59,130,246,.025) 45%,var(--surface) 80%);
+    }
+    .featured-metric{
+      background:rgba(17,24,39,.82);
+      border:1px solid rgba(34,211,238,.14);
+      border-radius:8px;padding:14px 10px;text-align:center;
+    }
+    .embedding-visual{
+      height:90px;position:relative;margin-bottom:18px;
+      border:1px solid var(--border);border-radius:10px;
+      background:
+        radial-gradient(circle at 20% 50%,rgba(34,211,238,.12),transparent 15%),
+        radial-gradient(circle at 78% 34%,rgba(59,130,246,.12),transparent 18%),
+        rgba(0,0,0,.12);overflow:hidden;
+    }
+    .embedding-visual::before,
+    .embedding-visual::after{
+      content:"";position:absolute;left:16%;right:16%;height:1px;top:44%;
+      background:linear-gradient(90deg,transparent,rgba(34,211,238,.45),rgba(59,130,246,.38),transparent);
+      transform:rotate(-8deg);
+    }
+    .embedding-visual::after{top:60%;transform:rotate(7deg);opacity:.6}
+    .node{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px rgba(34,211,238,.55)}
+    .node.b{background:var(--accent);box-shadow:0 0 12px rgba(59,130,246,.5)}
+
     @media(max-width:900px){
       nav{padding:0 20px}
       .nav-links{display:none}
       .section{padding:64px 20px}
       .hero-grid{grid-template-columns:1fr !important}
       .photo-col{display:none !important}
+      .stats-grid{grid-template-columns:repeat(2,1fr) !important}
+      .featured-grid,.experience-grid{grid-template-columns:1fr !important}
+    }
+    @media(max-width:520px){
+      .stats-grid{grid-template-columns:1fr 1fr !important}
+      .stats-grid>div{padding:18px 14px !important}
     }
   </style>
 </head>
@@ -111,17 +149,36 @@
     /* ---------------- i18n ---------------- */
     const T = {
       en: {
-        nav: { about:"About", experience:"Experience", projects:"Projects", demo:"Live Demo", reasoning:"Process", contact:"Contact", cv:"Download CV" },
+        nav: { about:"About", experience:"Experience", projects:"Projects", demo:"Live Demo", reasoning:"Decisions", contact:"Contact", cv:"Download CV" },
         hero: {
           eyebrow:"Data Scientist & ML Engineer · São Paulo, Brazil",
           tagline:"From Marketing Analytics to Production ML",
-          desc:"Data Scientist & Machine Learning Engineer focused on real business problems, reproducible pipelines and production-ready APIs.",
+          desc:"I turn business problems into production-ready Machine Learning systems — combining analytics experience with modeling, APIs and MLOps.",
           viewProjects:"View Projects →",
           liveDemo:"Live Demo"
         },
         values:[
           "Clean & testable code","Reproducible pipelines","Model tracking & versioning","APIs & deploy in production","Business-first thinking"
         ],
+        stats:[
+          {value:"7+",label:"years",sub:"Analytics & Performance"},
+          {value:"3",label:"ML projects",sub:"published"},
+          {value:"3",label:"live apps",sub:"APIs & dashboards"},
+          {value:"4",label:"programs",sub:"Data & Business"}
+        ],
+        featured:{
+          label:"Featured Project",
+          decision:"A recommendation system goes beyond binary prediction: it must learn useful representations and rank the right items for each user. This project combines PyTorch embeddings, ranking metrics and a reproducible MLOps pipeline from data to API.",
+          business:"Why it stands out", production:"ML Engineering workflow",
+          test:"Try recommendations →", caseStudy:"Full case study ↗", github:"GitHub ↗",
+          steps:["Interaction data","User + item embeddings","Ranking evaluation","DVC + MLflow","FastAPI + Docker"]
+        },
+        experience:{
+          label:"Experience", title:"From performance analytics to Machine Learning",
+          role:"Digital Marketing & Analytics · Independent", period:"2017 — Present", location:"Remote · São Paulo, Brazil",
+          desc:"Performance campaign management and analytics across CAC, ROAS, conversion funnels, attribution and A/B testing. This business-and-data foundation shaped the transition into predictive modeling and ML Engineering.",
+          flow:["Marketing","Analytics","Data Science","ML Engineering"]
+        },
         demo: {
           label:"Interactive", title:"Live Model Demos",
           churnTab:"Churn Prediction", recsysTab:"Recommender System",
@@ -146,13 +203,13 @@
           riskHigh:"High Risk", riskMed:"Medium Risk", riskLow:"Low Risk"
         },
         projects: {
-          label:"Selected Work", title:"Projects", live:"LIVE", inProgress:"IN PROGRESS",
-          github:"GitHub ↗", liveApi:"Live API ↗",
+          label:"Selected Work", title:"Other Projects", live:"LIVE", inProgress:"IN PROGRESS",
+          github:"GitHub ↗", liveApi:"Live API ↗", dashboard:"Live Dashboard ↗",
           items:{
             churn:{
               name:"Churn Prediction ML",
               problem:"Telecom companies bleed revenue when customers leave without warning. Predicting churn early enables proactive retention.",
-              description:"End-to-end ML pipeline: EDA, feature engineering, PyTorch MLP with class-imbalance handling, experiment tracking with MLflow, REST API via FastAPI, and CI/CD with GitHub Actions."
+              description:"End-to-end ML pipeline with EDA, feature engineering and model comparison. After experimenting with a PyTorch MLP, Logistic Regression was selected for production for its balance of performance and interpretability. MLflow, FastAPI, Docker and CI/CD complete the production workflow."
             },
             recsys:{
               name:"Recommender System",
@@ -172,23 +229,23 @@
           }
         },
         reasoning: {
-          label:"Architecture", title:"Technical Reasoning",
+          label:"Engineering", title:"Engineering Decisions",
           items:[
-            {tag:"MLOps", q:"Why MLflow over Weights & Biases?", a:"MLflow is self-hosted and open source — no vendor lock-in, full control over experiment data, and integrates natively into the Docker/FastAPI stack without external API keys in CI/CD."},
-            {tag:"Architecture", q:"Why FastAPI over Flask?", a:"Automatic OpenAPI docs, native async support, and Pydantic validation out of the box. For ML APIs where input schema matters, FastAPI eliminates boilerplate and documents itself."},
-            {tag:"Modeling", q:"Why PyTorch for tabular data?", a:"sklearn handles baselines well, but custom MLP architectures allow fine-grained control over dropout, batch norm, and loss weighting — critical for class-imbalanced datasets like churn."}
+            {tag:"Representation Learning", q:"Why embeddings for recommendations?", a:"Embeddings learn dense representations for users and items from interaction patterns. Instead of treating IDs as arbitrary numbers, the model can place related users and products closer in a learned latent space and use those representations for ranking."},
+            {tag:"Reproducibility", q:"Why DVC in the recommendation pipeline?", a:"Recommendation experiments depend heavily on data preparation. DVC makes the multi-stage pipeline reproducible and versions the relationship between data, transformations and model artifacts instead of leaving that logic trapped in a notebook."},
+            {tag:"MLOps", q:"Why MLflow + FastAPI?", a:"MLflow organizes experiments and model versions, while FastAPI exposes the trained recommender through a documented service. Together with Docker, this separates experimentation from serving and makes the project closer to a production ML workflow."}
           ]
         },
         about: {
           label:"About", titleA:"A deliberate", titleB:"learning path",
           p1:"My academic path wasn't linear — it was intentional. A BSc in Data Science at Mackenzie for technical depth, paired with Business Administration at UNIP to understand how organizations actually make decisions with data.",
           p2:"That foundation led to a specialization in Data Analytics at FIAP — moving from analysis into production thinking. From there, the next step was clear: Machine Learning Engineering, focused on the full model lifecycle.",
-          p3:"Currently completing my second FIAP specialization in ML Engineering: training, serving, versioning, and monitoring models at scale. Business, data and machine learning — one direction.",
+          p3:"Currently pursuing my second FIAP specialization, in ML Engineering: training, serving, versioning and monitoring models in production. Business, data and machine learning — one direction.",
           degrees:[
             ["BSc","Data Science","Mackenzie","2024"],
             ["BSc","Business Admin","UNIP","2023"],
             ["Postgrad","Data Analytics","FIAP","2025"],
-            ["Postgrad","ML Engineering","FIAP","2027 ↗"]
+            ["Postgrad","ML Engineering","FIAP","2027"]
           ],
           skills:[
             {cat:"Modeling",items:["PyTorch","scikit-learn","XGBoost","MLP","Embeddings","Feature Eng."]},
@@ -199,22 +256,41 @@
         },
         contact: {
           label:"Open to work", titleA:"Let's build", titleB:"something.",
-          desc:"Open to DS / MLE roles in São Paulo — hybrid or remote. If you're building something with data, let's talk.",
+          desc:"Open to Data Science / ML Engineering opportunities in São Paulo, hybrid or remote. If you're building something with data, let's talk.",
           sendEmail:"Send Email →", linkedin:"LinkedIn ↗"
         }
       },
       pt: {
-        nav: { about:"Sobre", experience:"Experiência", projects:"Projetos", demo:"Demo ao Vivo", reasoning:"Processo", contact:"Contato", cv:"Baixar Currículo" },
+        nav: { about:"Sobre", experience:"Experiência", projects:"Projetos", demo:"Demo ao Vivo", reasoning:"Decisões", contact:"Contato", cv:"Baixar Currículo" },
         hero: {
           eyebrow:"Cientista de Dados & ML Engineer · São Paulo, Brasil",
           tagline:"De Analytics de Marketing a ML em Produção",
-          desc:"Cientista de Dados & Engenheiro de Machine Learning focado em problemas reais de negócio, pipelines reprodutíveis e APIs prontas para produção.",
+          desc:"Transformo problemas de negócio em sistemas de Machine Learning prontos para produção — unindo experiência em analytics, modelagem, APIs e MLOps.",
           viewProjects:"Ver Projetos →",
           liveDemo:"Demo ao Vivo"
         },
         values:[
           "Código limpo e testável","Pipelines reprodutíveis","Rastreamento e versionamento de modelos","APIs e deploy em produção","Pensamento orientado a negócio"
         ],
+        stats:[
+          {value:"7+",label:"anos",sub:"Analytics & Performance"},
+          {value:"3",label:"projetos de ML",sub:"publicados"},
+          {value:"3",label:"apps no ar",sub:"APIs & dashboards"},
+          {value:"4",label:"formações",sub:"Dados & Negócios"}
+        ],
+        featured:{
+          label:"Projeto em Destaque",
+          decision:"Um sistema de recomendação vai além de uma predição binária: ele precisa aprender representações úteis e ranquear os itens certos para cada usuário. O projeto combina embeddings em PyTorch, métricas de ranking e um pipeline MLOps reprodutível dos dados até a API.",
+          business:"Por que ele se destaca", production:"Fluxo de ML Engineering",
+          test:"Testar recomendações →", caseStudy:"Ver case completo ↗", github:"GitHub ↗",
+          steps:["Dados de interação","Embeddings de usuário + item","Avaliação de ranking","DVC + MLflow","FastAPI + Docker"]
+        },
+        experience:{
+          label:"Experiência", title:"De analytics de performance a Machine Learning",
+          role:"Marketing Digital & Analytics · Autônomo", period:"2017 — Atual", location:"Remoto · São Paulo, SP",
+          desc:"Gestão e análise de campanhas de performance com foco em CAC, ROAS, funil de conversão, atribuição e testes A/B. Essa base em negócio e dados fundamentou a transição para modelagem preditiva e ML Engineering.",
+          flow:["Marketing","Analytics","Data Science","ML Engineering"]
+        },
         demo: {
           label:"Interativo", title:"Demos de Modelos ao Vivo",
           churnTab:"Predição de Churn", recsysTab:"Sistema de Recomendação",
@@ -223,15 +299,15 @@
           tenure:"Tempo de contrato (meses)", monthly:"Mensalidade ($)",
           contract:"Tipo de Contrato", internet:"Serviço de Internet", techSupport:"Suporte Técnico",
           onlineSecurity:"Segurança Online", gender:"Gênero", senior:"Idoso (Senior Citizen)",
-          autoNote:"TotalCharges = tenure × MonthlyCharges (automático)",
-          run:"→ Rodar Predição", running:"Executando inferência...",
-          idlePrompt:"Ajuste os parâmetros e rode a predição",
+          autoNote:"Total cobrado = tempo de contrato × mensalidade (calculado automaticamente)",
+          run:"→ Executar Predição", running:"Executando inferência...",
+          idlePrompt:"Ajuste os parâmetros e execute a predição",
           apiCalling:"Chamando a API...", coldStart:"A primeira chamada pode levar ~30s (cold start do Render)",
           resultLabel:"RESULTADO DA PREDIÇÃO", liveTag:" · API AO VIVO", simTag:" · SIMULADO",
           churnProb:"Probabilidade de churn:", simNote:"* API offline — exibindo simulação do modelo",
           reset:"Resetar",
           userId:"ID do Usuário", userIdHint:"Tente qualquer número inteiro — cada usuário tem um histórico de compras único",
-          topK:"Top K Recomendações", modelLabel:"MODELO",
+          topK:"Top K de Recomendações", modelLabel:"MODELO",
           modelDesc:"MLP com embeddings de usuário e item treinados sobre dados de interação de e-commerce do RetailRocket.",
           getRecs:"→ Obter Recomendações", fetching:"Buscando recomendações...",
           idleRecs:"Informe um ID de usuário e obtenha recomendações",
@@ -239,13 +315,13 @@
           riskHigh:"Alto Risco", riskMed:"Risco Médio", riskLow:"Baixo Risco"
         },
         projects: {
-          label:"Trabalhos Selecionados", title:"Projetos", live:"NO AR", inProgress:"EM ANDAMENTO",
-          github:"GitHub ↗", liveApi:"API ao Vivo ↗",
+          label:"Trabalhos Selecionados", title:"Outros Projetos", live:"NO AR", inProgress:"EM ANDAMENTO",
+          github:"GitHub ↗", liveApi:"API ao Vivo ↗", dashboard:"Dashboard ao Vivo ↗",
           items:{
             churn:{
               name:"Predição de Churn (ML)",
-              problem:"Empresas de telecom perdem receita quando clientes saem sem aviso. Prever o churn cedo permite retenção proativa.",
-              description:"Pipeline de ML de ponta a ponta: EDA, engenharia de features, MLP em PyTorch com tratamento de desbalanceamento de classes, rastreamento de experimentos com MLflow, API REST via FastAPI e CI/CD com GitHub Actions."
+              problem:"Empresas de telecom perdem receita quando clientes saem sem aviso. Prever o churn com antecedência permite ações proativas de retenção.",
+              description:"Pipeline de ML de ponta a ponta com EDA, engenharia de features e comparação entre modelos. Após experimentação com MLP em PyTorch, a Regressão Logística foi selecionada para produção pela combinação entre desempenho e interpretabilidade. MLflow, FastAPI, Docker e CI/CD completam o fluxo de produção."
             },
             recsys:{
               name:"Sistema de Recomendação",
@@ -265,35 +341,35 @@
           }
         },
         reasoning: {
-          label:"Arquitetura", title:"Raciocínio Técnico",
+          label:"Engenharia", title:"Decisões de Engenharia",
           items:[
-            {tag:"MLOps", q:"Por que MLflow em vez de Weights & Biases?", a:"MLflow é self-hosted e open source — sem vendor lock-in, controle total sobre os dados dos experimentos, e integra nativamente na stack Docker/FastAPI sem precisar de API keys externas no CI/CD."},
-            {tag:"Arquitetura", q:"Por que FastAPI em vez de Flask?", a:"Documentação OpenAPI automática, suporte nativo a async e validação com Pydantic prontos de fábrica. Para APIs de ML onde o schema de entrada importa, o FastAPI elimina boilerplate e se auto-documenta."},
-            {tag:"Modelagem", q:"Por que PyTorch para dados tabulares?", a:"O sklearn cobre bem os baselines, mas arquiteturas MLP customizadas permitem controle fino sobre dropout, batch norm e ponderação de loss — crítico para datasets desbalanceados como o de churn."}
+            {tag:"Representation Learning", q:"Por que embeddings para recomendação?", a:"Embeddings aprendem representações densas de usuários e itens a partir dos padrões de interação. Em vez de tratar IDs como números arbitrários, o modelo aprende um espaço latente no qual usuários e produtos relacionados ficam representados de forma útil para o ranking."},
+            {tag:"Reprodutibilidade", q:"Por que DVC no pipeline de recomendação?", a:"Experimentos de recomendação dependem fortemente da preparação dos dados. O DVC torna o pipeline de múltiplos estágios reproduzível e versiona a relação entre dados, transformações e artefatos do modelo, evitando que o processo fique preso a um notebook."},
+            {tag:"MLOps", q:"Por que MLflow + FastAPI?", a:"O MLflow organiza experimentos e versões do modelo, enquanto o FastAPI expõe o recomendador como um serviço documentado. Com Docker, isso separa experimentação de serving e aproxima o projeto de um fluxo real de ML em produção."}
           ]
         },
         about: {
           label:"Sobre", titleA:"Uma trajetória", titleB:"deliberada",
-          p1:"Minha trajetória acadêmica não foi linear — foi intencional. Um bacharelado em Data Science na Mackenzie para profundidade técnica, aliado a Administração na UNIP para entender como as organizações realmente tomam decisões com dados.",
+          p1:"Minha trajetória acadêmica não foi linear — foi intencional. Um bacharelado em Data Science na Mackenzie para profundidade técnica, aliado à Administração na UNIP para entender como as organizações realmente tomam decisões com dados.",
           p2:"Essa base levou a uma pós-graduação em Data Analytics na FIAP — saindo da análise e indo para o pensamento de produção. A partir daí, o próximo passo ficou claro: Machine Learning Engineering, focado no ciclo de vida completo do modelo.",
-          p3:"Atualmente concluindo minha segunda pós-graduação na FIAP, em ML Engineering: treinamento, serving, versionamento e monitoramento de modelos em escala. Negócio, dados e machine learning — uma única direção.",
+          p3:"Atualmente, estou cursando minha segunda pós-graduação na FIAP, em ML Engineering: treinamento, serving, versionamento e monitoramento de modelos em produção. Negócio, dados e machine learning — uma única direção.",
           degrees:[
             ["Bacharelado","Data Science","Mackenzie","2024"],
             ["Bacharelado","Administração","UNIP","2023"],
             ["Pós-graduação","Data Analytics","FIAP","2025"],
-            ["Pós-graduação","ML Engineering","FIAP","2027 ↗"]
+            ["Pós-graduação","ML Engineering","FIAP","2027"]
           ],
           skills:[
-            {cat:"Modelagem",items:["PyTorch","scikit-learn","XGBoost","MLP","Embeddings","Feature Eng."]},
+            {cat:"Modelagem",items:["PyTorch","scikit-learn","XGBoost","MLP","Embeddings","Feature Engineering"]},
             {cat:"MLOps",items:["MLflow","DVC","Docker","FastAPI","GitHub Actions"]},
             {cat:"Dados",items:["Pandas","NumPy","SQL","EDA","Visualização"]},
-            {cat:"Negócios",items:["CAC / ROAS","Funnel Analytics","Meta Ads","Segmentação"]}
+            {cat:"Negócios",items:["CAC / ROAS","Análise de Funil","Meta Ads","Segmentação"]}
           ]
         },
         contact: {
           label:"Aberto a oportunidades", titleA:"Vamos construir", titleB:"algo juntos.",
-          desc:"Aberto a vagas de DS / MLE em São Paulo — híbrido ou remoto. Se você está construindo algo com dados, vamos conversar.",
-          sendEmail:"Enviar Email →", linkedin:"LinkedIn ↗"
+          desc:"Aberto a oportunidades em Data Science / ML Engineering em São Paulo, em modelo híbrido ou remoto. Se você está construindo algo com dados, vamos conversar.",
+          sendEmail:"Enviar e-mail →", linkedin:"LinkedIn ↗"
         }
       }
     };
@@ -307,10 +383,11 @@
         status:"live"
       },
       recsys: {
-        stack:["PyTorch","DVC","MLflow","Docker","FastAPI"],
+        stack:["PyTorch","Embeddings","DVC","MLflow","Docker","FastAPI"],
         metrics:[["Precision@10","0.74"],["Recall@10","0.68"],["NDCG","0.71"]],
         github:"https://github.com/GFurts/recsys-retailrocket",
         live:"https://recsys-retailrocket.onrender.com/docs",
+        casePage:"./recsys.html",
         status:"live"
       },
       datathon: {
@@ -318,6 +395,7 @@
         metrics:[["ROC-AUC","0.648"],["Recall","0.89"],["Threshold","0.4"]],
         github:"https://github.com/GFurts/educational-risk-prediction",
         live:"https://educational-risk-prediction.streamlit.app",
+        linkType:"dashboard",
         status:"live"
       },
       mia: {
@@ -328,14 +406,16 @@
         status:"soon"
       }
     };
-    const PROJECT_ORDER = ["churn","recsys","datathon","mia"];
+    const PROJECT_ORDER = ["recsys","churn","datathon","mia"];
+    // Troque apenas este ID quando o próximo Tech Challenge virar o projeto principal.
+    const FEATURED_PROJECT = "recsys";
 
     function Nav({lang,setLang,t}) {
       return (
         <nav>
           <a href="#" className="logo">GF</a>
           <ul className="nav-links">
-            {[[t.nav.projects,"#projects"],[t.nav.demo,"#demo"],[t.nav.reasoning,"#reasoning"],[t.nav.about,"#about"],[t.nav.contact,"#contact"]].map(([l,h])=>(
+            {[[t.nav.projects,"#projects"],[t.nav.experience,"#experience"],[t.nav.demo,"#demo"],[t.nav.reasoning,"#reasoning"],[t.nav.about,"#about"],[t.nav.contact,"#contact"]].map(([l,h])=>(
               <li key={l}><a href={h}>{l}</a></li>
             ))}
           </ul>
@@ -449,15 +529,15 @@
       );
     }
 
-    function ValuesBar({t}) {
-      const icons = ["⬡","⟳","◈","⬡","◎"];
+    function StatsBar({t}) {
       return (
-        <div style={{background:'var(--surface)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)',padding:'20px 48px'}}>
-          <div style={{maxWidth:'1100px',margin:'0 auto',display:'flex',justifyContent:'space-between',flexWrap:'wrap',gap:'16px'}}>
-            {t.values.map((v,i)=>(
-              <div key={i} style={{display:'flex',alignItems:'center',gap:'10px'}}>
-                <span style={{color:'var(--accent)',fontSize:'16px'}}>{icons[i]}</span>
-                <span style={{fontSize:'13px',color:'var(--text2)',fontFamily:'var(--font-mono)'}}> {v}</span>
+        <div style={{background:'var(--surface)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)'}}>
+          <div className="stats-grid" style={{maxWidth:'1100px',margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+            {t.stats.map((s,i)=>(
+              <div key={s.label} style={{padding:'24px 22px',borderRight:i<3?'1px solid var(--border)':'none'}}>
+                <div style={{fontFamily:'var(--font-display)',fontSize:'30px',fontWeight:800,color:'var(--accent)',lineHeight:1}}>{s.value}</div>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:'11px',color:'var(--text)',marginTop:'7px'}}>{s.label}</div>
+                <div style={{fontSize:'11px',color:'var(--text3)',marginTop:'2px'}}>{s.sub}</div>
               </div>
             ))}
           </div>
@@ -465,7 +545,69 @@
       );
     }
 
-    function ChurnDemo({t}) {
+    function FeaturedProject({t}) {
+      const id = FEATURED_PROJECT;
+      const meta = PROJECT_META[id];
+      const copy = t.projects.items[id];
+      return (
+        <div id="projects">
+          <div className="section">
+            <div className="section-label">{t.featured.label}</div>
+            <div className="card featured-card" style={{padding:'32px'}}>
+              <div className="featured-grid" style={{display:'grid',gridTemplateColumns:'1.18fr .82fr',gap:'40px',alignItems:'start',position:'relative'}}>
+                <div>
+                  <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'14px'}}>
+                    <span style={{display:'inline-block',width:'7px',height:'7px',borderRadius:'50%',background:'var(--green)',boxShadow:'0 0 0 2px rgba(16,185,129,.2)',animation:'pulse 2s ease-in-out infinite'}} />
+                    <span style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--green)'}}>PRODUCTION</span>
+                  </div>
+                  <h2 style={{fontFamily:'var(--font-display)',fontSize:'clamp(30px,4vw,46px)',fontWeight:700,letterSpacing:'-1.5px',marginBottom:'14px'}}>{copy.name}</h2>
+                  <p style={{fontSize:'15px',color:'var(--text2)',lineHeight:1.75,marginBottom:'18px',maxWidth:'640px'}}>{copy.problem}</p>
+                  <div style={{background:'rgba(34,211,238,.045)',border:'1px solid rgba(34,211,238,.16)',borderRadius:'8px',padding:'16px',marginBottom:'22px'}}>
+                    <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',letterSpacing:'1.3px',color:'var(--cyan)',marginBottom:'7px'}}>{t.featured.business.toUpperCase()}</div>
+                    <p style={{fontSize:'13px',color:'var(--text2)',lineHeight:1.7}}>{t.featured.decision}</p>
+                  </div>
+                  <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginBottom:'24px'}}>
+                    {meta.stack.map(tag=><span key={tag} className="tag">{tag}</span>)}
+                  </div>
+                  <div style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
+                    <a href="#demo" className="btn btn-blue">{t.featured.test}</a>
+                    <a href={meta.casePage || "#"} className="btn btn-ghost">{t.featured.caseStudy}</a>
+                    <a href={meta.github} target="_blank" rel="noreferrer" className="btn btn-ghost">{t.featured.github}</a>
+                  </div>
+                </div>
+                <div>
+                  <div className="embedding-visual" aria-hidden="true">
+                    <span className="node" style={{left:'13%',top:'30%'}} />
+                    <span className="node b" style={{left:'28%',top:'62%'}} />
+                    <span className="node" style={{left:'45%',top:'25%'}} />
+                    <span className="node b" style={{left:'62%',top:'55%'}} />
+                    <span className="node" style={{left:'79%',top:'22%'}} />
+                    <span className="node b" style={{left:'86%',top:'67%'}} />
+                  </div>
+                  <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--text3)',letterSpacing:'1.4px',marginBottom:'12px'}}>{t.featured.production.toUpperCase()}</div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px',marginBottom:'18px'}}>
+                    {meta.metrics.map(([k,v])=>(
+                      <div key={k} className="featured-metric">
+                        <div style={{fontFamily:'var(--font-mono)',fontSize:'22px',fontWeight:600,color:'var(--cyan)'}}>{v}</div>
+                        <div style={{fontFamily:'var(--font-mono)',fontSize:'9px',color:'var(--text3)',marginTop:'3px'}}>{k}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {t.featured.steps.map((step,i)=>(
+                    <div key={step} style={{display:'flex',alignItems:'center',gap:'10px',padding:'10px 0',borderBottom:i<t.featured.steps.length-1?'1px solid var(--border)':'none'}}>
+                      <span style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--cyan)',width:'22px'}}>0{i+1}</span>
+                      <span style={{fontSize:'12px',color:'var(--text2)'}}>{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function ChurnDemo({t,lang}) {
       const [state,setState] = useState("idle");
       const [result,setResult] = useState(null);
       const [inputs,setInputs] = useState({
@@ -529,17 +671,29 @@
               </div>
             ))}
             {[
-              {k:"Contract",l:t.demo.contract,opts:["Month-to-month","One year","Two year"]},
-              {k:"InternetService",l:t.demo.internet,opts:["Fiber optic","DSL","No"]},
-              {k:"TechSupport",l:t.demo.techSupport,opts:["No","Yes","No internet service"]},
-              {k:"OnlineSecurity",l:t.demo.onlineSecurity,opts:["No","Yes","No internet service"]},
-              {k:"gender",l:t.demo.gender,opts:["Male","Female"]},
-              {k:"SeniorCitizen",l:t.demo.senior,opts:["0","1"]}
+              {k:"Contract",l:t.demo.contract,opts:[
+                {v:"Month-to-month",pt:"Mensal"},{v:"One year",pt:"Um ano"},{v:"Two year",pt:"Dois anos"}
+              ]},
+              {k:"InternetService",l:t.demo.internet,opts:[
+                {v:"Fiber optic",pt:"Fibra óptica"},{v:"DSL",pt:"DSL"},{v:"No",pt:"Sem internet"}
+              ]},
+              {k:"TechSupport",l:t.demo.techSupport,opts:[
+                {v:"No",pt:"Não"},{v:"Yes",pt:"Sim"},{v:"No internet service",pt:"Sem serviço de internet"}
+              ]},
+              {k:"OnlineSecurity",l:t.demo.onlineSecurity,opts:[
+                {v:"No",pt:"Não"},{v:"Yes",pt:"Sim"},{v:"No internet service",pt:"Sem serviço de internet"}
+              ]},
+              {k:"gender",l:t.demo.gender,opts:[
+                {v:"Male",pt:"Masculino"},{v:"Female",pt:"Feminino"}
+              ]},
+              {k:"SeniorCitizen",l:t.demo.senior,opts:[
+                {v:"0",pt:"Não"},{v:"1",pt:"Sim"}
+              ]}
             ].map(({k,l,opts})=>(
               <div key={k}>
                 <label style={{display:'block',fontSize:'11px',color:'var(--text2)',marginBottom:'5px',fontFamily:'var(--font-mono)'}}>{l}</label>
                 <select className="input" style={{appearance:'none'}} value={inputs[k]} onChange={e=>set(k,e.target.value)}>
-                  {opts.map(o=><option key={o}>{o}</option>)}
+                  {opts.map(o=><option key={o.v} value={o.v}>{lang==="pt"?o.pt:o.v}</option>)}
                 </select>
               </div>
             ))}
@@ -647,8 +801,8 @@
       );
     }
 
-    function LiveDemo({t}) {
-      const [tab,setTab] = useState("churn");
+    function LiveDemo({t,lang}) {
+      const [tab,setTab] = useState(FEATURED_PROJECT==="recsys" ? "recsys" : "churn");
       const tabs = [
         {id:"churn",  label:t.demo.churnTab, sub:t.demo.churnSub},
         {id:"recsys", label:t.demo.recsysTab, sub:t.demo.recsysSub}
@@ -677,7 +831,7 @@
               ))}
             </div>
 
-            {tab==="churn"  && <ChurnDemo  t={t} />}
+            {tab==="churn"  && <ChurnDemo  t={t} lang={lang} />}
             {tab==="recsys" && <RecSysDemo t={t} />}
           </div>
         </div>
@@ -685,15 +839,17 @@
     }
 
     function Projects({t}) {
+      const otherProjects = PROJECT_ORDER.filter(id=>id!==FEATURED_PROJECT);
       return (
-        <div id="projects">
-          <div className="section">
+        <div id="other-projects">
+          <div className="section" style={{paddingTop:'48px'}}>
             <div className="section-label">{t.projects.label}</div>
             <h2 className="section-title">{t.projects.title}</h2>
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:'16px'}}>
-              {PROJECT_ORDER.map(id=>{
+              {otherProjects.map(id=>{
                 const meta = PROJECT_META[id];
                 const copy = t.projects.items[id];
+                const liveLabel = meta.linkType==="dashboard" ? t.projects.dashboard : t.projects.liveApi;
                 return (
                   <div key={id} className="card" style={{display:'flex',flexDirection:'column',gap:'14px',opacity:meta.status==="soon"?.55:1}}>
                     <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
@@ -719,12 +875,47 @@
                     {meta.status==="live"&&(
                       <div style={{display:'flex',gap:'16px',marginTop:'auto',paddingTop:'8px'}}>
                         <a href={meta.github} target="_blank" rel="noreferrer" className="mono-link">{t.projects.github}</a>
-                        <a href={meta.live} target="_blank" rel="noreferrer" style={{fontFamily:'var(--font-mono)',fontSize:'12px',color:'var(--accent)',textDecoration:'none'}}>{t.projects.liveApi}</a>
+                        <a href={meta.live} target="_blank" rel="noreferrer" style={{fontFamily:'var(--font-mono)',fontSize:'12px',color:'var(--accent)',textDecoration:'none'}}>{liveLabel}</a>
                       </div>
                     )}
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function Experience({t}) {
+      return (
+        <div id="experience" style={{background:'var(--surface)',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)'}}>
+          <div className="section">
+            <div className="section-label">{t.experience.label}</div>
+            <h2 className="section-title">{t.experience.title}</h2>
+            <div className="experience-grid" style={{display:'grid',gridTemplateColumns:'1fr .9fr',gap:'48px',alignItems:'center'}}>
+              <div className="card" style={{padding:'28px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',gap:'16px',flexWrap:'wrap',marginBottom:'12px'}}>
+                  <h3 style={{fontFamily:'var(--font-display)',fontSize:'20px',fontWeight:650}}>{t.experience.role}</h3>
+                  <span style={{fontFamily:'var(--font-mono)',fontSize:'11px',color:'var(--accent)'}}>{t.experience.period}</span>
+                </div>
+                <div style={{fontFamily:'var(--font-mono)',fontSize:'10px',color:'var(--text3)',marginBottom:'18px'}}>{t.experience.location}</div>
+                <p style={{fontSize:'14px',color:'var(--text2)',lineHeight:1.8}}>{t.experience.desc}</p>
+                <div style={{display:'flex',flexWrap:'wrap',gap:'7px',marginTop:'20px'}}>
+                  {["CAC","ROAS","Funil","Atribuição","A/B Testing","GA4"].map(tag=><span key={tag} className="tag">{tag}</span>)}
+                </div>
+              </div>
+              <div>
+                {t.experience.flow.map((item,i)=>(
+                  <div key={item} style={{display:'flex',alignItems:'center',gap:'14px',minHeight:'58px'}}>
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',alignSelf:'stretch'}}>
+                      <span style={{width:'10px',height:'10px',borderRadius:'50%',background:i===t.experience.flow.length-1?'var(--accent)':'var(--border2)',marginTop:'8px',boxShadow:i===t.experience.flow.length-1?'0 0 0 4px rgba(59,130,246,.12)':'none'}} />
+                      {i<t.experience.flow.length-1&&<span style={{width:'1px',flex:1,background:'var(--border2)',margin:'5px 0'}} />}
+                    </div>
+                    <div style={{fontFamily:'var(--font-display)',fontSize:i===t.experience.flow.length-1?'21px':'17px',fontWeight:i===t.experience.flow.length-1?700:500,color:i===t.experience.flow.length-1?'var(--text)':'var(--text2)'}}>{item}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -829,9 +1020,11 @@
           <Nav lang={lang} setLang={setLang} t={t} />
           <main>
             <Hero t={t} />
-            <ValuesBar t={t} />
-            <LiveDemo t={t} />
+            <StatsBar t={t} />
+            <FeaturedProject t={t} />
+            <LiveDemo t={t} lang={lang} />
             <Projects t={t} />
+            <Experience t={t} />
             <Reasoning t={t} />
             <About t={t} />
             <Contact t={t} />
