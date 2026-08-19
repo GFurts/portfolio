@@ -168,6 +168,14 @@
     .lab-tab.active{color:white;background:rgba(79,140,255,.11)}
     .lab-status{font-family:var(--font-mono);font-size:9px;color:var(--faint)}
     .lab-grid{display:grid;grid-template-columns:.9fr 1.1fr;min-height:410px}
+    .lab-explainer{margin-bottom:24px;padding:18px;border:1px solid var(--line);border-radius:14px;background:rgba(79,140,255,.035)}
+    .lab-explainer-title{font-family:var(--font-display);font-size:15px;font-weight:650;letter-spacing:-.02em;margin-bottom:8px}
+    .lab-explainer-copy{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+    .lab-explainer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .lab-explainer-item{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.012)}
+    .lab-explainer-item small{display:block;font-family:var(--font-mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-2);margin-bottom:5px}
+    .lab-explainer-item span{font-size:11px;color:#b9c4d2;line-height:1.5;display:block}
+    .result-explainer{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.65}
     .lab-controls{padding:28px;border-right:1px solid var(--line)}
     .lab-result{padding:28px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.008)}
     .field{margin-bottom:16px}
@@ -246,6 +254,7 @@
       .work-meta{display:none}
       .principles{grid-template-columns:1fr}
       .lab-top{align-items:flex-start;gap:14px;flex-direction:column}
+      .lab-explainer-grid{grid-template-columns:1fr}
       .lab-controls,.lab-result{padding:20px}
       .rec-grid{grid-template-columns:repeat(2,1fr)}
       .edu-row{grid-template-columns:1fr 70px}
@@ -343,12 +352,12 @@
       <div style="margin-top:92px" class="reveal">
         <div class="eyebrow" style="margin-bottom:18px" data-i18n="otherWork">Outros trabalhos</div>
         <div class="work-list">
-          <a class="work-row" href="https://github.com/GFurts/Churn-Prediction-ML" target="_blank" rel="noreferrer">
+          <a class="work-row" href="./churn.html">
             <span class="work-index">02</span><span class="work-title" data-i18n="churnTitle">Churn Prediction ML</span>
             <span class="work-desc" data-i18n="churnDesc">Classificação, threshold orientado a custo, MLflow, FastAPI, Docker e CI/CD.</span>
             <span class="work-meta"><span class="status-live">● LIVE</span> · AUC 0.89</span>
           </a>
-          <a class="work-row" href="https://github.com/GFurts/educational-risk-prediction" target="_blank" rel="noreferrer">
+          <a class="work-row" href="./educational-risk.html">
             <span class="work-index">03</span><span class="work-title" data-i18n="eduTitle">Risco Educacional</span>
             <span class="work-desc" data-i18n="eduDesc">XGBoost com foco em recall e dashboard Streamlit para apoio à decisão.</span>
             <span class="work-meta"><span class="status-live">● LIVE</span> · Recall 0.89</span>
@@ -404,7 +413,7 @@
     <div class="shell">
       <div class="section-head reveal">
         <div class="eyebrow">Live Lab</div>
-        <div><h2 data-i18n="labHeadline">Não precisa acreditar no case. Pode testar.</h2><p data-i18n="labIntro">As APIs estão publicadas no Render. A primeira chamada pode demorar alguns segundos por causa do cold start.</p></div>
+        <div><h2 data-i18n="labHeadline">Quer ver como funciona? Teste aqui.</h2><p data-i18n="labIntro">Você pode usar os modelos diretamente por aqui. Na primeira tentativa, pode levar alguns segundos para o serviço iniciar.</p></div>
       </div>
       <div class="lab-shell reveal">
         <div class="lab-top">
@@ -412,25 +421,43 @@
             <button class="lab-tab active" data-tab="recsys" data-i18n="tabRec">Recommender</button>
             <button class="lab-tab" data-tab="churn">Churn</button>
           </div>
-          <div class="lab-status"><span style="color:var(--green)">●</span> LIVE ENDPOINTS</div>
+          <div class="lab-status" id="apiStatus"><span style="color:var(--faint)">●</span> <span id="apiStatusText">PRONTO PARA TESTAR</span></div>
         </div>
         <div id="recsysPanel" class="lab-grid">
           <div class="lab-controls">
-            <div class="field"><label data-i18n="userId">ID do usuário</label><input type="number" id="recUser" value="1" min="0"><div class="lab-help" data-i18n="userHint">Cada usuário tem um histórico de interação diferente.</div></div>
+            <div class="lab-explainer">
+              <div class="lab-explainer-title" data-i18n="recWhatTitle">O que este modelo faz</div>
+              <div class="lab-explainer-copy" data-i18n="recWhatCopy">Ele tenta sugerir produtos que podem ser interessantes para um usuário com base nos padrões encontrados no histórico de interações.</div>
+              <div class="lab-explainer-grid">
+                <div class="lab-explainer-item"><small data-i18n="inputLabel">O que você escolhe</small><span data-i18n="recInput">Escolha um usuário e quantos produtos você quer receber.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="outputLabel">O que aparece</small><span data-i18n="recOutput">Uma lista de produtos, do mais recomendado para o menos recomendado.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="interpretLabel">Como entender</small><span data-i18n="recInterpret">O item #1 é a principal sugestão do modelo para aquele usuário.</span></div>
+              </div>
+            </div>
+            <div class="field"><label data-i18n="userId">ID do usuário</label><input type="number" id="recUser" value="1" min="0"><div class="lab-help" data-i18n="userHint">Troque o ID para ver como as sugestões mudam de um usuário para outro.</div></div>
             <div class="field"><label>Top K</label><select id="recTopK"><option>5</option><option selected>8</option><option>10</option></select></div>
-            <button class="btn btn-blue" style="width:100%;margin-top:8px" id="recRun" data-i18n="getRec">Obter recomendações →</button>
+            <button class="btn btn-blue" style="width:100%;margin-top:8px" id="recRun" data-i18n="getRec">Ver recomendações →</button>
           </div>
-          <div class="lab-result" id="recResult"><div class="lab-empty"><div class="symbol">◇</div><div data-i18n="recEmpty">Informe um ID e consulte o recomendador em produção.</div></div></div>
+          <div class="lab-result" id="recResult"><div class="lab-empty"><div class="symbol">◇</div><div data-i18n="recEmpty">Escolha um usuário e veja quais produtos o modelo recomenda.</div></div></div>
         </div>
         <div id="churnPanel" class="lab-grid" style="display:none">
           <div class="lab-controls">
+            <div class="lab-explainer">
+              <div class="lab-explainer-title" data-i18n="chWhatTitle">O que este modelo faz</div>
+              <div class="lab-explainer-copy" data-i18n="chWhatCopy">Ele estima a chance de um cliente cancelar o serviço com base em algumas características do contrato e do relacionamento com a empresa.</div>
+              <div class="lab-explainer-grid">
+                <div class="lab-explainer-item"><small data-i18n="inputLabel">O que você escolhe</small><span data-i18n="chInput">Altere os dados do cliente, como tempo de contrato e mensalidade.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="outputLabel">O que aparece</small><span data-i18n="chOutput">Uma porcentagem indicando o risco estimado de cancelamento.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="interpretLabel">Como entender</small><span data-i18n="chInterpret">Quanto maior a porcentagem, maior o risco que o modelo enxerga para aquele perfil.</span></div>
+              </div>
+            </div>
             <div class="field"><label data-i18n="tenure">Tempo de contrato (meses)</label><input type="number" id="chTenure" value="12"></div>
             <div class="field"><label data-i18n="monthly">Mensalidade ($)</label><input type="number" id="chMonthly" value="65.5" step="0.1"></div>
             <div class="field"><label data-i18n="contract">Tipo de contrato</label><select id="chContract"><option value="Month-to-month" data-i18n="monthlyContract">Mensal</option><option value="One year" data-i18n="oneYear">Um ano</option><option value="Two year" data-i18n="twoYears">Dois anos</option></select></div>
             <div class="field"><label data-i18n="internet">Internet</label><select id="chInternet"><option value="Fiber optic" data-i18n="fiber">Fibra óptica</option><option value="DSL">DSL</option><option value="No" data-i18n="noInternet">Sem internet</option></select></div>
-            <button class="btn btn-blue" style="width:100%;margin-top:8px" id="chRun" data-i18n="runPred">Executar predição →</button>
+            <button class="btn btn-blue" style="width:100%;margin-top:8px" id="chRun" data-i18n="runPred">Calcular risco →</button>
           </div>
-          <div class="lab-result" id="chResult"><div class="lab-empty"><div class="symbol">◎</div><div data-i18n="chEmpty">Ajuste os parâmetros e consulte o modelo.</div></div></div>
+          <div class="lab-result" id="chResult"><div class="lab-empty"><div class="symbol">◎</div><div data-i18n="chEmpty">Altere os dados do cliente e veja como o risco estimado muda.</div></div></div>
         </div>
       </div>
     </div>
@@ -489,30 +516,37 @@ const I18N = {
     heroCopy:"Sou Gabriel Furtado. Minha trajetória começou em <strong>Marketing & Analytics</strong> e hoje construo sistemas de ML end-to-end — da modelagem ao deploy.",
     viewWork:"Ver trabalhos →",downloadCv:"Baixar currículo",portraitSub:"Dados · ML · Produto",
     proof1:"anos em Analytics & Performance",proof2:"projetos de ML publicados",proof3:"APIs / dashboards no ar",proof4:"graduações + pós-graduações",
-    selectedWork:"Trabalho em destaque",workHeadline:"Projetos que resolvem problemas — não só notebooks.",workIntro:"Modelagem é apenas uma parte. O que me interessa é transformar uma hipótese em um sistema reproduzível, testável e utilizável.",
-    recsysTitle:"Sistema de Recomendação — RetailRocket",recsysLede:"Motor de recomendação para e-commerce com embeddings em PyTorch, avaliação por métricas de ranking e um pipeline MLOps reproduzível dos dados até a API.",
+    selectedWork:"Projetos",workHeadline:"Algumas coisas que eu construí — e por que elas importam.",workIntro:"Aqui estão projetos em que transformei problemas reais em soluções que podem ser testadas, usadas e discutidas além do notebook.",
+    recsysTitle:"Sistema de Recomendação — RetailRocket",recsysLede:"Criei um sistema que aprende com o histórico de interações para sugerir produtos mais relevantes para cada usuário. Além do modelo, organizei todo o fluxo até uma API que pode ser testada online.",
     openCase:"Conhecer o case →",liveApi:"API ao vivo ↗",ranking:"ranking",coverage:"cobertura",ordering:"ordenação",
-    recsysNote:"<b>Por que ele está aqui:</b> une representação, ranking, reprodutibilidade, testes e serving. É um case de ML Engineering, não apenas de modelagem.",
-    otherWork:"Outros trabalhos",churnTitle:"Churn Prediction ML",churnDesc:"Classificação, threshold orientado a custo, MLflow, FastAPI, Docker e CI/CD.",
-    eduTitle:"Risco Educacional",eduDesc:"XGBoost com foco em recall e dashboard Streamlit para apoio à decisão.",
-    miaTitle:"Marketing Intelligence Agent",miaDesc:"LLM + dados de campanha para explicar resultados, tendências e ações em linguagem natural.",inProgress:"● EM DESENVOLVIMENTO",
+    recsysNote:"<b>Por que é o projeto em destaque:</b> ele reúne modelagem e engenharia em um sistema completo — dos dados e experimentos até uma API funcionando em produção.",
+    otherWork:"Outros projetos",churnTitle:"Churn Prediction ML",churnDesc:"Um modelo para identificar clientes com maior chance de cancelar o serviço e ajudar a priorizar ações de retenção.",
+    eduTitle:"Risco Educacional",eduDesc:"Um modelo para ajudar a identificar alunos que podem precisar de mais atenção, reduzindo o risco de casos importantes passarem despercebidos.",
+    miaTitle:"Marketing Intelligence Agent",miaDesc:"Um agente que lê dados de campanhas e transforma números em explicações, tendências e recomendações em linguagem natural.",inProgress:"● EM DESENVOLVIMENTO",
     experienceEyebrow:"Experiência & trajetória",experienceHeadline:"Negócio primeiro. Tecnologia com propósito.",experienceIntro:"A mudança para Data Science não apagou minha experiência anterior — ela virou contexto para modelagem, métricas e tomada de decisão.",
     today:"ATUAL",expTitle:"Marketing Digital & Analytics · Autônomo",expCopy:"Gestão de campanhas de performance, análise de CAC e ROAS, funil de conversão, atribuição multicanal e testes A/B. Essa experiência criou a ponte entre problemas de negócio e modelagem preditiva.",
     journey1:"Métricas, aquisição, funil e experimentação.",journey2:"Estatística, programação, dados e machine learning.",journey3:"Análise aplicada e tomada de decisão orientada a dados.",journey4:"Treinamento, serving, versionamento, testes e produção.",
     howEyebrow:"Como eu trabalho",howHeadline:"Menos “qual modelo?”. Mais “qual decisão?”.",howIntro:"A tecnologia entra depois do problema. Meu processo combina modelagem, engenharia e entendimento do impacto de negócio.",
     principle1Title:"Modelagem",principle1:"Baselines, métricas adequadas, experimentação e escolhas que façam sentido para o problema.",principle2:"Versionamento, tracking, reprodutibilidade e testes para que um resultado possa ser repetido.",
     principle3Title:"APIs & Deploy",principle3:"FastAPI, Docker e CI/CD para tirar o modelo do notebook e colocá-lo em uso.",principle4Title:"Negócio",principle4:"Threshold, custo, risco, experiência do usuário e a pergunta que o modelo precisa responder.",
-    labHeadline:"Não precisa acreditar no case. Pode testar.",labIntro:"As APIs estão publicadas no Render. A primeira chamada pode demorar alguns segundos por causa do cold start.",tabRec:"Recommender",
-    userId:"ID do usuário",userHint:"Cada usuário tem um histórico de interação diferente.",getRec:"Obter recomendações →",recEmpty:"Informe um ID e consulte o recomendador em produção.",
+    labHeadline:"Quer ver como funciona? Teste aqui.",labIntro:"Você pode usar os modelos diretamente por aqui. Na primeira tentativa, pode levar alguns segundos para o serviço iniciar.",tabRec:"Recommender",
+    inputLabel:"O que você escolhe",outputLabel:"O que aparece",interpretLabel:"Como entender",
+    recWhatTitle:"O que este modelo faz",recWhatCopy:"Ele tenta sugerir produtos que podem ser interessantes para um usuário com base nos padrões encontrados no histórico de interações.",
+    recInput:"Escolha um usuário e quantos produtos você quer receber.",recOutput:"Uma lista de produtos, do mais recomendado para o menos recomendado.",recInterpret:"O item #1 é a principal sugestão do modelo para aquele usuário.",
+    chWhatTitle:"O que este modelo faz",chWhatCopy:"Ele estima a chance de um cliente cancelar o serviço com base em algumas características do contrato e do relacionamento com a empresa.",
+    chInput:"Altere os dados do cliente, como tempo de contrato e mensalidade.",chOutput:"Uma porcentagem indicando o risco estimado de cancelamento.",chInterpret:"Quanto maior a porcentagem, maior o risco que o modelo enxerga para aquele perfil.",
+    userId:"ID do usuário",userHint:"Troque o ID para ver como as sugestões mudam de um usuário para outro.",getRec:"Ver recomendações →",recEmpty:"Escolha um usuário e veja quais produtos o modelo recomenda.",
     tenure:"Tempo de contrato (meses)",monthly:"Mensalidade ($)",contract:"Tipo de contrato",monthlyContract:"Mensal",oneYear:"Um ano",twoYears:"Dois anos",internet:"Internet",fiber:"Fibra óptica",noInternet:"Sem internet",
-    runPred:"Executar predição →",chEmpty:"Ajuste os parâmetros e consulte o modelo.",
+    runPred:"Calcular risco →",chEmpty:"Altere os dados do cliente e veja como o risco estimado muda.",
     aboutEyebrow:"Sobre",aboutHeadline:"Uma trajetória deliberada entre dados e negócio.",
     about1:"Minha formação combina <strong>Ciência de Dados</strong> e <strong>Administração</strong>. Isso me ajuda a olhar para um sistema de ML tanto pela métrica do modelo quanto pela decisão que ele precisa suportar.",
     about2:"Depois de Data Analytics, o próximo passo foi Machine Learning Engineering: aprofundar o ciclo de vida completo do modelo — treinamento, serving, versionamento, testes e monitoramento.",
     about3:"Hoje busco oportunidades em Data Science / ML Engineering em São Paulo, em modelo híbrido ou remoto.",businessAdmin:"Administração",bachelor:"Bacharelado",
     contactEyebrow:"Contato",contactHeadline:"Tem um problema interessante<br><span>para resolver com dados?</span>",contactCopy:"Estou aberto a oportunidades e conversas sobre Data Science, Machine Learning e sistemas de ML em produção.",sendEmail:"Enviar e-mail →",
-    loading:"Consultando API...",cold:"A primeira chamada pode sofrer cold start.",liveResult:"Resposta da API em produção",fallback:"API indisponível — exibindo simulação local",items:"itens recomendados",
-    riskLow:"Baixo risco",riskMed:"Risco médio",riskHigh:"Alto risco",probability:"probabilidade de churn"
+    loading:"Consultando API...",cold:"O Render pode levar cerca de 1 minuto para acordar o serviço.",liveResult:"Resposta real da API em produção",items:"itens recomendados",
+    riskLow:"Baixo risco",riskMed:"Risco médio",riskHigh:"Alto risco",probability:"probabilidade de churn",
+    statusIdle:"PRONTO PARA TESTAR",statusWaking:"INICIANDO MODELO...",statusOnline:"API ONLINE",statusOffline:"MODELO INDISPONÍVEL",
+    apiError:"Não foi possível obter uma resposta do modelo em produção.",tryAgain:"Tente novamente em alguns instantes.",invalidResponse:"A API respondeu, mas o formato retornado não era o esperado."
   },
   en: {
     navWork:"Work",navExperience:"Experience",navLab:"Live Lab",navAbout:"About",navContact:"Contact",cv:"Resume",
@@ -521,30 +555,37 @@ const I18N = {
     heroCopy:"I'm Gabriel Furtado. My path started in <strong>Marketing & Analytics</strong>, and today I build end-to-end ML systems — from modeling to deployment.",
     viewWork:"See my work →",downloadCv:"Download resume",portraitSub:"Data · ML · Product",
     proof1:"years in Analytics & Performance",proof2:"published ML projects",proof3:"live APIs / dashboards",proof4:"degrees + postgrads",
-    selectedWork:"Featured work",workHeadline:"Projects that solve problems — not just notebooks.",workIntro:"Modeling is only one piece. I care about turning a hypothesis into a reproducible, testable and usable system.",
-    recsysTitle:"Recommender System — RetailRocket",recsysLede:"E-commerce recommendation engine with PyTorch embeddings, ranking-based evaluation and a reproducible MLOps pipeline from data to API.",
+    selectedWork:"Projects",workHeadline:"A few things I built — and why they matter.",workIntro:"These are projects where I turned real problems into solutions that can be tested, used and discussed beyond a notebook.",
+    recsysTitle:"Recommender System — RetailRocket",recsysLede:"I built a system that learns from interaction history to suggest products that may be more relevant to each user. Beyond the model, I organized the full flow into an API that can be tested online.",
     openCase:"Explore the case →",liveApi:"Live API ↗",ranking:"ranking",coverage:"coverage",ordering:"ordering",
-    recsysNote:"<b>Why it is featured:</b> it connects representation learning, ranking, reproducibility, testing and serving. It is an ML Engineering case, not just a modeling exercise.",
-    otherWork:"Other work",churnTitle:"Churn Prediction ML",churnDesc:"Classification, cost-aware thresholding, MLflow, FastAPI, Docker and CI/CD.",
-    eduTitle:"Educational Risk Prediction",eduDesc:"XGBoost focused on recall with a Streamlit decision-support dashboard.",
-    miaTitle:"Marketing Intelligence Agent",miaDesc:"LLM + campaign data to explain results, trends and recommended actions in natural language.",inProgress:"● IN DEVELOPMENT",
+    recsysNote:"<b>Why it is featured:</b> it brings modeling and engineering together in one complete system — from data and experiments to an API running in production.",
+    otherWork:"Other projects",churnTitle:"Churn Prediction ML",churnDesc:"A model that identifies customers who are more likely to cancel the service, helping prioritize retention efforts.",
+    eduTitle:"Educational Risk Prediction",eduDesc:"A model designed to help identify students who may need more attention, reducing the chance that important risk cases go unnoticed.",
+    miaTitle:"Marketing Intelligence Agent",miaDesc:"An agent that reads campaign data and turns numbers into explanations, trends and recommendations in natural language.",inProgress:"● IN DEVELOPMENT",
     experienceEyebrow:"Experience & path",experienceHeadline:"Business first. Technology with purpose.",experienceIntro:"Moving into Data Science did not erase my previous experience — it became context for modeling, metrics and decision-making.",
     today:"PRESENT",expTitle:"Digital Marketing & Analytics · Independent",expCopy:"Performance campaign management, CAC and ROAS analysis, conversion funnels, multichannel attribution and A/B testing. That experience became the bridge between business problems and predictive modeling.",
     journey1:"Metrics, acquisition, funnels and experimentation.",journey2:"Statistics, programming, data and machine learning.",journey3:"Applied analytics and data-informed decision-making.",journey4:"Training, serving, versioning, testing and production.",
     howEyebrow:"How I work",howHeadline:"Less “which model?”. More “which decision?”.",howIntro:"Technology comes after the problem. My process combines modeling, engineering and an understanding of business impact.",
     principle1Title:"Modeling",principle1:"Baselines, appropriate metrics, experimentation and choices that fit the actual problem.",principle2:"Versioning, tracking, reproducibility and testing so results can be repeated.",
     principle3Title:"APIs & Deployment",principle3:"FastAPI, Docker and CI/CD to move models beyond notebooks and into use.",principle4Title:"Business",principle4:"Thresholds, cost, risk, user experience and the question the model actually needs to answer.",
-    labHeadline:"You don't have to trust the case study. Test it.",labIntro:"The APIs are deployed on Render. The first call may take a few seconds because of cold start.",tabRec:"Recommender",
-    userId:"User ID",userHint:"Each user has a different interaction history.",getRec:"Get recommendations →",recEmpty:"Enter a user ID and query the production recommender.",
+    labHeadline:"Want to see how it works? Try it here.",labIntro:"You can use the models directly here. The first attempt may take a few seconds while the service starts.",tabRec:"Recommender",
+    inputLabel:"What you choose",outputLabel:"What you get",interpretLabel:"How to understand it",
+    recWhatTitle:"What this model does",recWhatCopy:"It suggests products that may be interesting to a user based on patterns found in past interactions.",
+    recInput:"Choose a user and how many products you want to receive.",recOutput:"A list of products, from the strongest recommendation to the weakest.",recInterpret:"Item #1 is the model’s top suggestion for that user.",
+    chWhatTitle:"What this model does",chWhatCopy:"It estimates the chance that a customer will cancel the service based on a few details about the contract and customer relationship.",
+    chInput:"Change customer details such as tenure and monthly charges.",chOutput:"A percentage showing the estimated cancellation risk.",chInterpret:"The higher the percentage, the more risk the model sees for that profile.",
+    userId:"User ID",userHint:"Change the ID to see how recommendations differ from one user to another.",getRec:"See recommendations →",recEmpty:"Choose a user and see which products the model recommends.",
     tenure:"Tenure (months)",monthly:"Monthly charges ($)",contract:"Contract",monthlyContract:"Month-to-month",oneYear:"One year",twoYears:"Two years",internet:"Internet",fiber:"Fiber optic",noInternet:"No internet",
-    runPred:"Run prediction →",chEmpty:"Adjust the parameters and query the model.",
+    runPred:"Calculate risk →",chEmpty:"Change the customer details and see how the estimated risk changes.",
     aboutEyebrow:"About",aboutHeadline:"A deliberate path between data and business.",
     about1:"My background combines <strong>Data Science</strong> and <strong>Business Administration</strong>. That helps me look at an ML system through both model performance and the decision it needs to support.",
     about2:"After Data Analytics, the next step was Machine Learning Engineering: going deeper into the full model lifecycle — training, serving, versioning, testing and monitoring.",
     about3:"I'm currently looking for Data Science / ML Engineering opportunities in São Paulo, hybrid or remote.",businessAdmin:"Business Administration",bachelor:"BSc",
     contactEyebrow:"Contact",contactHeadline:"Have an interesting problem<br><span>to solve with data?</span>",contactCopy:"I'm open to opportunities and conversations about Data Science, Machine Learning and production ML systems.",sendEmail:"Send email →",
-    loading:"Calling API...",cold:"The first request may hit a cold start.",liveResult:"Response from the production API",fallback:"API unavailable — showing local simulation",items:"recommended items",
-    riskLow:"Low risk",riskMed:"Medium risk",riskHigh:"High risk",probability:"churn probability"
+    loading:"Calling API...",cold:"Render may take about a minute to wake the service.",liveResult:"Real response from the production API",items:"recommended items",
+    riskLow:"Low risk",riskMed:"Medium risk",riskHigh:"High risk",probability:"churn probability",
+    statusIdle:"READY TO TEST",statusWaking:"STARTING MODEL...",statusOnline:"API ONLINE",statusOffline:"MODEL UNAVAILABLE",
+    apiError:"The production model did not return a response.",tryAgain:"Please try again in a moment.",invalidResponse:"The API responded, but the returned format was unexpected."
   }
 };
 
@@ -560,6 +601,11 @@ function applyLanguage(next){
   document.getElementById("enBtn").classList.toggle("active",lang==="en");
   const cv=lang==="pt"?"./gabriel_furtado_cv_pt.pdf":"./gabriel_furtado_cv_en.pdf";
   document.getElementById("cvTop").href=cv;document.getElementById("cvHero").href=cv;
+  const statusText=document.getElementById("apiStatusText");
+  if(statusText && (!statusText.dataset.state || statusText.dataset.state==="idle")) {
+    statusText.textContent=I18N[lang].statusIdle;
+    statusText.dataset.state="idle";
+  }
   document.title=lang==="pt"?"GF — Gabriel Furtado":"GF — Gabriel Furtado | Data Scientist & ML Engineer";
 }
 
@@ -580,20 +626,85 @@ function loadingHTML(){
   return `<div class="lab-empty"><div class="spinner"></div><div>${I18N[lang].loading}</div><div class="lab-note">${I18N[lang].cold}</div></div>`;
 }
 
-document.getElementById("recRun").onclick=async()=>{
-  const box=document.getElementById("recResult"),user=document.getElementById("recUser").value,topK=Number(document.getElementById("recTopK").value);
-  box.innerHTML=loadingHTML();
-  let recs=[],live=false;
+function apiErrorHTML(detail=""){
+  const safe=String(detail||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+  return `<div class="lab-empty"><div class="symbol" style="color:var(--red)">!</div><div style="color:var(--text)">${I18N[lang].apiError}</div><div class="lab-note">${safe || I18N[lang].tryAgain}</div></div>`;
+}
+
+function setApiStatus(state){
+  const wrap=document.getElementById("apiStatus");
+  const text=document.getElementById("apiStatusText");
+  if(!wrap || !text) return;
+  const cfg={
+    idle:["var(--faint)",I18N[lang].statusIdle],
+    waking:["var(--amber)",I18N[lang].statusWaking],
+    online:["var(--green)",I18N[lang].statusOnline],
+    offline:["var(--red)",I18N[lang].statusOffline],
+  }[state];
+  wrap.querySelector("span").style.color=cfg[0];
+  text.textContent=cfg[1];
+  text.dataset.state=state;
+}
+
+async function fetchWithTimeout(url, options={}, timeout=90000){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),timeout);
   try{
-    const res=await fetch(`https://recsys-retailrocket.onrender.com/recommend?user_id=${encodeURIComponent(user)}&top_k=${topK}`,{signal:AbortSignal.timeout(35000)});
-    if(res.ok){const data=await res.json();recs=data.recommendations||[];live=true;}
-  }catch(e){}
-  if(!recs.length) recs=[123,10991,10280,4422,4748,6976,15595,7302,1822,935].slice(0,topK);
-  box.innerHTML=`<div style="width:100%"><div class="rec-grid">${recs.map((id,i)=>`<div class="rec-item"><div class="rec-rank">#${i+1}</div><div class="rec-id">${id}</div></div>`).join("")}</div><div class="lab-note">${live?I18N[lang].liveResult:I18N[lang].fallback} · ${recs.length} ${I18N[lang].items}</div></div>`;
+    return await fetch(url,{...options,signal:controller.signal});
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function wakeApi(healthUrl){
+  setApiStatus("waking");
+  const res=await fetchWithTimeout(healthUrl,{cache:"no-store"},90000);
+  if(!res.ok) throw new Error(`Health check HTTP ${res.status}`);
+  return res;
+}
+
+document.getElementById("recRun").onclick=async()=>{
+  const box=document.getElementById("recResult");
+  const user=document.getElementById("recUser").value;
+  const topK=Number(document.getElementById("recTopK").value);
+  box.innerHTML=loadingHTML();
+
+  try{
+    // Render Free can be asleep. Wake it first, then perform the real inference call.
+    const health=await wakeApi("https://recsys-retailrocket.onrender.com/");
+    const healthData=await health.json().catch(()=>({}));
+    if(healthData.model_loaded===false) throw new Error("Modelo não carregado no serviço.");
+
+    const res=await fetchWithTimeout(
+      `https://recsys-retailrocket.onrender.com/recommend?user_id=${encodeURIComponent(user)}&top_k=${topK}`,
+      {cache:"no-store"},
+      30000
+    );
+
+    if(!res.ok){
+      let detail=`HTTP ${res.status}`;
+      try{const e=await res.json();detail=e.detail||detail;}catch(_){}
+      throw new Error(detail);
+    }
+
+    const data=await res.json();
+    const recs=Array.isArray(data.recommendations)?data.recommendations:[];
+    if(!recs.length) throw new Error(I18N[lang].invalidResponse);
+
+    setApiStatus("online");
+    box.innerHTML=`<div style="width:100%"><div class="rec-grid">${recs.map((id,i)=>`<div class="rec-item"><div class="rec-rank">#${i+1}</div><div class="rec-id">${id}</div></div>`).join("")}</div><div class="result-explainer">${lang==="pt"?"O produto #1 é a principal sugestão para esse usuário. Os números que aparecem são os IDs dos produtos usados no projeto.":"Product #1 is the top suggestion for this user. The numbers shown are the product IDs used in the project."}</div><div class="lab-note">${I18N[lang].liveResult} · ${recs.length} ${I18N[lang].items}</div></div>`;
+  }catch(e){
+    setApiStatus("offline");
+    const detail=e?.name==="AbortError" ? I18N[lang].tryAgain : (e?.message || I18N[lang].tryAgain);
+    box.innerHTML=apiErrorHTML(detail);
+  }
 };
 
 function churnPayload(){
-  const tenure=Number(document.getElementById("chTenure").value),monthly=Number(document.getElementById("chMonthly").value),contract=document.getElementById("chContract").value,internet=document.getElementById("chInternet").value;
+  const tenure=Number(document.getElementById("chTenure").value);
+  const monthly=Number(document.getElementById("chMonthly").value);
+  const contract=document.getElementById("chContract").value;
+  const internet=document.getElementById("chInternet").value;
   return {
     gender:"Male",SeniorCitizen:0,Partner:"No",Dependents:"No",tenure,
     PhoneService:"Yes",MultipleLines:"No",InternetService:internet,OnlineSecurity:"No",
@@ -602,18 +713,48 @@ function churnPayload(){
     MonthlyCharges:monthly,TotalCharges:tenure*monthly
   };
 }
-function simulateChurn(p){
-  let v=.47;if(p.Contract==="Month-to-month")v+=.22;if(p.Contract==="Two year")v-=.28;if(p.tenure<6)v+=.16;if(p.tenure>24)v-=.13;if(p.MonthlyCharges>80)v+=.10;if(p.InternetService==="Fiber optic")v+=.05;return Math.max(.04,Math.min(.96,v));
-}
+
 document.getElementById("chRun").onclick=async()=>{
-  const box=document.getElementById("chResult"),payload=churnPayload();box.innerHTML=loadingHTML();let prob=null,live=false;
+  const box=document.getElementById("chResult");
+  const payload=churnPayload();
+  box.innerHTML=loadingHTML();
+
   try{
-    const res=await fetch("https://churn-prediction-ml-e4f1.onrender.com/predict",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:AbortSignal.timeout(35000)});
-    if(res.ok){const d=await res.json();prob=Number(d.churn_probability??d.probability);live=true;}
-  }catch(e){}
-  if(!Number.isFinite(prob)) prob=simulateChurn(payload);
-  const level=prob>.65?"high":prob>.38?"med":"low",color=level==="high"?"var(--red)":level==="med"?"var(--amber)":"var(--green)",label=level==="high"?I18N[lang].riskHigh:level==="med"?I18N[lang].riskMed:I18N[lang].riskLow;
-  box.innerHTML=`<div class="risk-result"><div class="risk-big" style="color:${color}">${Math.round(prob*100)}%</div><div class="risk-label" style="color:${color}">${label}</div><div class="lab-note">${I18N[lang].probability} · ${(prob*100).toFixed(1)}%<br>${live?I18N[lang].liveResult:I18N[lang].fallback}</div></div>`;
+    // /health wakes the free Render instance. We allow enough time for a cold start.
+    await wakeApi("https://churn-prediction-ml-e4f1.onrender.com/health");
+
+    const res=await fetchWithTimeout(
+      "https://churn-prediction-ml-e4f1.onrender.com/predict",
+      {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload),
+        cache:"no-store"
+      },
+      30000
+    );
+
+    if(!res.ok){
+      let detail=`HTTP ${res.status}`;
+      try{const e=await res.json();detail=e.detail ? JSON.stringify(e.detail) : detail;}catch(_){}
+      throw new Error(detail);
+    }
+
+    const data=await res.json();
+    const prob=Number(data.churn_probability);
+    if(!Number.isFinite(prob)) throw new Error(I18N[lang].invalidResponse);
+
+    setApiStatus("online");
+    const level=prob>.65?"high":prob>.38?"med":"low";
+    const color=level==="high"?"var(--red)":level==="med"?"var(--amber)":"var(--green)";
+    const label=level==="high"?I18N[lang].riskHigh:level==="med"?I18N[lang].riskMed:I18N[lang].riskLow;
+
+    box.innerHTML=`<div class="risk-result"><div class="risk-big" style="color:${color}">${Math.round(prob*100)}%</div><div class="risk-label" style="color:${color}">${label}</div><div class="result-explainer">${lang==="pt"?"Esse percentual é a estimativa do modelo para o perfil que você montou. Um valor mais alto indica que esse cliente merece mais atenção em uma estratégia de retenção — não que ele vá cancelar com certeza.":"This percentage is the model’s estimate for the profile you created. A higher value suggests that this customer may deserve more attention in a retention strategy — it does not mean they will definitely cancel."}</div><div class="lab-note">${I18N[lang].probability} · ${(prob*100).toFixed(1)}%<br>${I18N[lang].liveResult}</div></div>`;
+  }catch(e){
+    setApiStatus("offline");
+    const detail=e?.name==="AbortError" ? I18N[lang].tryAgain : (e?.message || I18N[lang].tryAgain);
+    box.innerHTML=apiErrorHTML(detail);
+  }
 };
 
 const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("show");io.unobserve(e.target);}}),{threshold:.08});
