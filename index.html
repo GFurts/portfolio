@@ -196,6 +196,15 @@
     .risk-label{font-size:14px;margin-top:10px}
     .lab-note{font-family:var(--font-mono);font-size:9px;color:var(--faint);margin-top:16px;text-align:center}
 
+    .field textarea{width:100%;min-height:150px;border-radius:9px;border:1px solid var(--line-strong);background:#091625;color:white;padding:11px 12px;outline:none;resize:vertical;line-height:1.55;font-size:13px}
+    .field textarea:focus{border-color:rgba(118,167,255,.65)}
+    .triage-result{text-align:center;width:100%}
+    .triage-urgency{font-family:var(--font-display);font-size:50px;line-height:1;font-weight:650;letter-spacing:-.05em}
+    .triage-cat{font-size:14px;margin-top:12px;color:var(--text)}
+    .triage-conf{margin-top:18px;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+    .triage-conf i{display:block;height:100%;background:var(--blue-2);border-radius:99px}
+    .triage-warn{margin-top:12px;font-size:11px;color:var(--amber)}
+
     /* About */
     .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:90px}
     .about-copy p{color:var(--muted);font-size:16px;line-height:1.9;margin-bottom:18px}
@@ -316,8 +325,8 @@
   <section class="proof">
     <div class="shell proof-grid">
       <div class="proof-item reveal"><div class="proof-value">7+</div><div class="proof-label" data-i18n="proof1">anos em Analytics & Performance</div></div>
-      <div class="proof-item reveal"><div class="proof-value">3</div><div class="proof-label" data-i18n="proof2">projetos de ML publicados</div></div>
-      <div class="proof-item reveal"><div class="proof-value">3</div><div class="proof-label" data-i18n="proof3">APIs / dashboards no ar</div></div>
+      <div class="proof-item reveal"><div class="proof-value">4</div><div class="proof-label" data-i18n="proof2">projetos de ML publicados</div></div>
+      <div class="proof-item reveal"><div class="proof-value">4</div><div class="proof-label" data-i18n="proof3">APIs / dashboards no ar</div></div>
       <div class="proof-item reveal"><div class="proof-value">2 + 2</div><div class="proof-label" data-i18n="proof4">graduações + pós-graduações</div></div>
     </div>
   </section>
@@ -332,38 +341,43 @@
       <article class="featured reveal">
         <div>
           <div class="project-number">01 / FEATURED CASE</div>
-          <h3 data-i18n="recsysTitle">Sistema de Recomendação — RetailRocket</h3>
-          <p class="lede" data-i18n="recsysLede">Motor de recomendação para e-commerce com embeddings em PyTorch, avaliação por métricas de ranking e um pipeline MLOps reproduzível dos dados até a API.</p>
-          <div class="featured-tags"><span class="pill">PyTorch</span><span class="pill">Embeddings</span><span class="pill">DVC</span><span class="pill">MLflow</span><span class="pill">FastAPI</span><span class="pill">Docker</span></div>
+          <h3 data-i18n="triTitle">Triagem de Textos Médicos — MLOps ponta a ponta</h3>
+          <p class="lede" data-i18n="triLede">Criei um sistema que lê um texto médico e indica a área clínica e o nível de urgência. O modelo é só uma parte: construí em volta dele tudo que um serviço real precisa — retreino automático, testes, monitoramento e uma API rápida.</p>
+          <div class="featured-tags"><span class="pill">scikit-learn</span><span class="pill">ONNX Runtime</span><span class="pill">FastAPI</span><span class="pill">Docker</span><span class="pill">Airflow</span><span class="pill">Prometheus</span><span class="pill">Grafana</span><span class="pill">GitHub Actions</span></div>
           <div class="featured-actions">
-            <a class="btn btn-primary" href="./recsys.html" data-i18n="openCase">Conhecer o case →</a>
-            <a class="btn" href="https://recsys-retailrocket.onrender.com/docs" target="_blank" rel="noreferrer" data-i18n="liveApi">API ao vivo ↗</a>
-            <a class="btn" href="https://github.com/GFurts/recsys-retailrocket" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a class="btn btn-primary" href="./triage.html" data-i18n="openCase">Conhecer o case →</a>
+            <a class="btn" href="#lab" data-open-tab="triage" data-i18n="triTry">Testar ao vivo →</a>
+            <a class="btn" href="https://github.com/GFurts/medical-triage-mlops" target="_blank" rel="noreferrer">GitHub ↗</a>
           </div>
         </div>
         <aside class="featured-side">
-          <div class="metric-row"><div><div class="metric-name">PRECISION@10</div><div class="metric-value">0.74</div></div><div class="metric-name" data-i18n="ranking">ranking</div></div>
-          <div class="metric-row"><div><div class="metric-name">RECALL@10</div><div class="metric-value">0.68</div></div><div class="metric-name" data-i18n="coverage">cobertura</div></div>
-          <div class="metric-row"><div><div class="metric-name">NDCG</div><div class="metric-value">0.71</div></div><div class="metric-name" data-i18n="ordering">ordenação</div></div>
-          <p class="featured-note" data-i18n-html="recsysNote"><b>Por que ele está aqui:</b> une representação, ranking, reprodutibilidade, testes e serving. É um case de ML Engineering, não apenas de modelagem.</p>
+          <div class="metric-row"><div><div class="metric-name">URGENT RECALL</div><div class="metric-value">0.85</div></div><div class="metric-name" data-i18n="triM1">casos urgentes captados</div></div>
+          <div class="metric-row"><div><div class="metric-name">F1-MACRO</div><div class="metric-value">0.76</div></div><div class="metric-name" data-i18n="triM2">5 áreas médicas</div></div>
+          <div class="metric-row"><div><div class="metric-name">LATENCY P50</div><div class="metric-value">2.3 ms</div></div><div class="metric-name" data-i18n="triM3">12× mais rápido</div></div>
+          <p class="featured-note" data-i18n-html="triNote"><b>Por que é o projeto em destaque:</b> ele mostra o ciclo completo de um modelo em produção — dos dados limpos ao retreino automático, com testes, métricas e uma API otimizada.</p>
         </aside>
       </article>
 
       <div style="margin-top:92px" class="reveal">
         <div class="eyebrow" style="margin-bottom:18px" data-i18n="otherWork">Outros trabalhos</div>
         <div class="work-list">
+          <a class="work-row" href="./recsys.html">
+            <span class="work-index">02</span><span class="work-title" data-i18n="recsysTitle">Sistema de Recomendação — RetailRocket</span>
+            <span class="work-desc" data-i18n="recsysRowDesc">Sugere produtos relevantes para cada usuário a partir do histórico de interações, com API online.</span>
+            <span class="work-meta"><span class="status-live">● LIVE</span> · NDCG 0.71</span>
+          </a>
           <a class="work-row" href="./churn.html">
-            <span class="work-index">02</span><span class="work-title" data-i18n="churnTitle">Churn Prediction ML</span>
+            <span class="work-index">03</span><span class="work-title" data-i18n="churnTitle">Churn Prediction ML</span>
             <span class="work-desc" data-i18n="churnDesc">Classificação, threshold orientado a custo, MLflow, FastAPI, Docker e CI/CD.</span>
             <span class="work-meta"><span class="status-live">● LIVE</span> · AUC 0.89</span>
           </a>
           <a class="work-row" href="./educational-risk.html">
-            <span class="work-index">03</span><span class="work-title" data-i18n="eduTitle">Risco Educacional</span>
+            <span class="work-index">04</span><span class="work-title" data-i18n="eduTitle">Risco Educacional</span>
             <span class="work-desc" data-i18n="eduDesc">XGBoost com foco em recall e dashboard Streamlit para apoio à decisão.</span>
             <span class="work-meta"><span class="status-live">● LIVE</span> · Recall 0.89</span>
           </a>
           <div class="work-row">
-            <span class="work-index">04</span><span class="work-title" data-i18n="miaTitle">Marketing Intelligence Agent</span>
+            <span class="work-index">05</span><span class="work-title" data-i18n="miaTitle">Marketing Intelligence Agent</span>
             <span class="work-desc" data-i18n="miaDesc">LLM + dados de campanha para explicar resultados, tendências e ações em linguagem natural.</span>
             <span class="work-meta"><span class="status-progress" data-i18n="inProgress">● EM DESENVOLVIMENTO</span></span>
           </div>
@@ -418,12 +432,30 @@
       <div class="lab-shell reveal">
         <div class="lab-top">
           <div class="lab-tabs">
-            <button class="lab-tab active" data-tab="recsys" data-i18n="tabRec">Recommender</button>
+            <button class="lab-tab active" data-tab="triage" data-i18n="tabTriage">Triagem</button>
+            <button class="lab-tab" data-tab="recsys" data-i18n="tabRec">Recommender</button>
             <button class="lab-tab" data-tab="churn">Churn</button>
           </div>
           <div class="lab-status" id="apiStatus"><span style="color:var(--faint)">●</span> <span id="apiStatusText">PRONTO PARA TESTAR</span></div>
         </div>
-        <div id="recsysPanel" class="lab-grid">
+        <div id="triagePanel" class="lab-grid">
+          <div class="lab-controls">
+            <div class="lab-explainer">
+              <div class="lab-explainer-title" data-i18n="trWhatTitle">O que este modelo faz</div>
+              <div class="lab-explainer-copy" data-i18n="trWhatCopy">Ele lê um texto médico e indica a qual área clínica ele mais se parece. A partir dessa área, o sistema aplica uma regra para sinalizar o nível de atenção: normal, atenção ou urgente.</div>
+              <div class="lab-explainer-grid">
+                <div class="lab-explainer-item"><small data-i18n="inputLabel">O que você escolhe</small><span data-i18n="trInput">Cole um texto médico em inglês ou use um dos exemplos.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="outputLabel">O que aparece</small><span data-i18n="trOutput">A área clínica, o nível de urgência e o quanto o modelo está confiante.</span></div>
+                <div class="lab-explainer-item"><small data-i18n="interpretLabel">Como entender</small><span data-i18n="trInterpret">É um protótipo de estudo. A urgência vem de uma tabela editável, não de validação clínica.</span></div>
+              </div>
+            </div>
+            <div class="field"><label data-i18n="trExamples">Exemplos</label><select id="trExample"><option value="" data-i18n="trPick">Escolher um exemplo…</option><option value="cardio" data-i18n="trExCardio">Estudo sobre hipertensão → urgente</option><option value="onco" data-i18n="trExOnco">Estudo sobre câncer de pele → atenção</option><option value="thal" data-i18n="trExThal">Estudo genético sobre talassemia → normal</option></select></div>
+            <div class="field"><label data-i18n="trText">Texto médico (inglês)</label><textarea id="trText" maxlength="10000" placeholder="Paste an abstract-style medical text in English..."></textarea><div class="lab-help" data-i18n="trHint">O modelo foi treinado com resumos de artigos médicos em inglês.</div></div>
+            <button class="btn btn-blue" style="width:100%;margin-top:8px" id="trRun" data-i18n="trRun">Classificar texto →</button>
+          </div>
+          <div class="lab-result" id="trResult"><div class="lab-empty"><div class="symbol">✚</div><div data-i18n="trEmpty">Cole um texto médico e veja a área clínica e o nível de urgência estimados.</div></div></div>
+        </div>
+        <div id="recsysPanel" class="lab-grid" style="display:none">
           <div class="lab-controls">
             <div class="lab-explainer">
               <div class="lab-explainer-title" data-i18n="recWhatTitle">O que este modelo faz</div>
@@ -545,6 +577,19 @@ const I18N = {
     contactEyebrow:"Contato",contactHeadline:"Tem um problema interessante<br><span>para resolver com dados?</span>",contactCopy:"Estou aberto a oportunidades e conversas sobre Data Science, Machine Learning e sistemas de ML em produção.",sendEmail:"Enviar e-mail →",
     loading:"Consultando API...",cold:"O Render pode levar cerca de 1 minuto para acordar o serviço.",liveResult:"Resposta real da API em produção",items:"itens recomendados",
     riskLow:"Baixo risco",riskMed:"Risco médio",riskHigh:"Alto risco",probability:"probabilidade de churn",
+    triTitle:"Triagem de Textos Médicos — MLOps ponta a ponta",
+    triLede:"Criei um sistema que lê um texto médico e indica a área clínica e o nível de urgência. O modelo é só uma parte: construí em volta dele tudo que um serviço real precisa — retreino automático, testes, monitoramento e uma API rápida.",
+    triTry:"Testar ao vivo →",triCode:"Ver código e documentação ↗",triM1:"casos urgentes captados",triM2:"5 áreas médicas",triM3:"12× mais rápido",
+    triNote:"<b>Por que é o projeto em destaque:</b> ele mostra o ciclo completo de um modelo em produção — dos dados limpos ao retreino automático, com testes, métricas e uma API otimizada.",
+    recsysRowDesc:"Sugere produtos relevantes para cada usuário a partir do histórico de interações, com API online.",
+    tabTriage:"Triagem",trWhatTitle:"O que este modelo faz",trWhatCopy:"Ele lê um texto médico e indica a qual área clínica ele mais se parece. A partir dessa área, o sistema aplica uma regra para sinalizar o nível de atenção: normal, atenção ou urgente.",
+    trInput:"Cole um resumo médico em inglês ou use um dos exemplos reais.",trOutput:"A área clínica, o nível de urgência e o quanto o modelo está confiante.",trInterpret:"É um protótipo de estudo. A urgência vem de uma tabela editável, não de validação clínica.",
+    trExamples:"Exemplos reais do conjunto de teste",trPick:"Escolher um exemplo…",trExCardio:"Estudo sobre hipertensão → urgente",trExOnco:"Estudo sobre câncer de pele → atenção",trExThal:"Estudo genético sobre talassemia → normal",
+    trText:"Texto médico (inglês)",trHint:"Funciona melhor com textos longos, no estilo de resumo de artigo científico em inglês. Frases curtas costumam ter confiança baixa.",trRun:"Classificar texto →",trEmpty:"Cole um texto médico e veja a área clínica e o nível de urgência estimados.",
+    trShort:"Escreva um texto um pouco maior para o modelo analisar.",trConf:"confiança do modelo",trLowConf:"Confiança baixa: o texto pode misturar mais de uma área.",
+    trResultNote:"A área vem do modelo. A urgência vem de uma regra que associa cada área a um nível de atenção. Serve para demonstrar o sistema, não para decisões clínicas.",
+    urg_urgent:"Urgente",urg_attention:"Atenção",urg_normal:"Normal",
+    cat_neoplasms:"Neoplasias (tumores)",cat_digestive_system_diseases:"Doenças do sistema digestivo",cat_nervous_system_diseases:"Doenças do sistema nervoso",cat_cardiovascular_diseases:"Doenças cardiovasculares",cat_general_pathological_conditions:"Condições patológicas gerais",
     statusIdle:"PRONTO PARA TESTAR",statusWaking:"INICIANDO MODELO...",statusOnline:"API ONLINE",statusOffline:"MODELO INDISPONÍVEL",
     apiError:"Não foi possível obter uma resposta do modelo em produção.",tryAgain:"Tente novamente em alguns instantes.",invalidResponse:"A API respondeu, mas o formato retornado não era o esperado."
   },
@@ -584,6 +629,19 @@ const I18N = {
     contactEyebrow:"Contact",contactHeadline:"Have an interesting problem<br><span>to solve with data?</span>",contactCopy:"I'm open to opportunities and conversations about Data Science, Machine Learning and production ML systems.",sendEmail:"Send email →",
     loading:"Calling API...",cold:"Render may take about a minute to wake the service.",liveResult:"Real response from the production API",items:"recommended items",
     riskLow:"Low risk",riskMed:"Medium risk",riskHigh:"High risk",probability:"churn probability",
+    triTitle:"Medical Text Triage — end-to-end MLOps",
+    triLede:"I built a system that reads a medical text and indicates the clinical area and urgency level. The model is only one piece: around it I built what a real service needs — automatic retraining, tests, monitoring and a fast API.",
+    triTry:"Try it live →",triCode:"View code and docs ↗",triM1:"urgent cases caught",triM2:"5 medical areas",triM3:"12× faster",
+    triNote:"<b>Why it is featured:</b> it shows the full life of a model in production — from cleaned data to automatic retraining, with tests, metrics and an optimized API.",
+    recsysRowDesc:"Suggests relevant products for each user from interaction history, with a live API.",
+    tabTriage:"Triage",trWhatTitle:"What this model does",trWhatCopy:"It reads a medical text and indicates which clinical area it most resembles. From that area, the system applies a rule to flag the attention level: normal, attention or urgent.",
+    trInput:"Paste a medical abstract in English or use one of the real examples.",trOutput:"The clinical area, the urgency level and how confident the model is.",trInterpret:"This is a study prototype. Urgency comes from an editable table, not clinical validation.",
+    trExamples:"Real examples from the test set",trPick:"Pick an example…",trExCardio:"Hypertension study → urgent",trExOnco:"Skin cancer study → attention",trExThal:"Thalassemia genetics study → normal",
+    trText:"Medical text (English)",trHint:"Works best with longer texts in the style of an English scientific abstract. Short sentences usually get low confidence.",trRun:"Classify text →",trEmpty:"Paste a medical text and see the estimated clinical area and urgency level.",
+    trShort:"Please write a slightly longer text for the model to analyze.",trConf:"model confidence",trLowConf:"Low confidence: the text may mix more than one area.",
+    trResultNote:"The area comes from the model. Urgency comes from a rule that maps each area to an attention level. It demonstrates the system and is not meant for clinical decisions.",
+    urg_urgent:"Urgent",urg_attention:"Attention",urg_normal:"Normal",
+    cat_neoplasms:"Neoplasms (tumors)",cat_digestive_system_diseases:"Digestive system diseases",cat_nervous_system_diseases:"Nervous system diseases",cat_cardiovascular_diseases:"Cardiovascular diseases",cat_general_pathological_conditions:"General pathological conditions",
     statusIdle:"READY TO TEST",statusWaking:"STARTING MODEL...",statusOnline:"API ONLINE",statusOffline:"MODEL UNAVAILABLE",
     apiError:"The production model did not return a response.",tryAgain:"Please try again in a moment.",invalidResponse:"The API responded, but the returned format was unexpected."
   }
@@ -617,10 +675,12 @@ const navWrap=document.getElementById("navWrap");
 document.getElementById("menuBtn").onclick=()=>navWrap.classList.toggle("mobile-open");
 document.querySelectorAll("#navLinks a").forEach(a=>a.onclick=()=>navWrap.classList.remove("mobile-open"));
 
-document.querySelectorAll(".lab-tab").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".lab-tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
-  const tab=btn.dataset.tab;document.getElementById("recsysPanel").style.display=tab==="recsys"?"grid":"none";document.getElementById("churnPanel").style.display=tab==="churn"?"grid":"none";
-}));
+function activateTab(tab){
+  document.querySelectorAll(".lab-tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  ["triage","recsys","churn"].forEach(t=>{const p=document.getElementById(t+"Panel");if(p)p.style.display=t===tab?"grid":"none";});
+}
+document.querySelectorAll(".lab-tab").forEach(btn=>btn.addEventListener("click",()=>activateTab(btn.dataset.tab)));
+document.querySelectorAll("[data-open-tab]").forEach(a=>a.addEventListener("click",()=>activateTab(a.dataset.openTab)));
 
 function loadingHTML(){
   return `<div class="lab-empty"><div class="spinner"></div><div>${I18N[lang].loading}</div><div class="lab-note">${I18N[lang].cold}</div></div>`;
@@ -656,9 +716,9 @@ async function fetchWithTimeout(url, options={}, timeout=90000){
   }
 }
 
-async function wakeApi(healthUrl){
+async function wakeApi(healthUrl, waitMs=90000){
   setApiStatus("waking");
-  const res=await fetchWithTimeout(healthUrl,{cache:"no-store"},90000);
+  const res=await fetchWithTimeout(healthUrl,{cache:"no-store"},waitMs);
   if(!res.ok) throw new Error(`Health check HTTP ${res.status}`);
   return res;
 }
@@ -754,6 +814,50 @@ document.getElementById("chRun").onclick=async()=>{
     setApiStatus("offline");
     const detail=e?.name==="AbortError" ? I18N[lang].tryAgain : (e?.message || I18N[lang].tryAgain);
     box.innerHTML=apiErrorHTML(detail);
+  }
+};
+
+// ===== Medical triage demo =====
+// Replace with the real Render URL after deploying the API (no trailing slash).
+const TRIAGE_API="https://medical-triage-api-g96h.onrender.com";
+const TRIAGE_EXAMPLES={
+  "cardio": "Double-blind comparison of doxazosin and enalapril in patients with mild or moderate essential hypertension. The antihypertensive efficacy and safety of doxazosin and enalapril were compared in the general practice setting (n = 54). Both agents produced comparable, statistically significant (p less than 0.05) reductions in mean blood pressure with no clinically relevant changes in heart rate. Side effects in the two groups were mild or moderate and disappeared or were tolerated with continued treatment. Doxazosin, in contrast to enalapril, produced a significant (p less than 0.05) reduction in the total serum cholesterol concentration, a reduction in the level of triglycerides, and a favorable increase in the high-density lipoprotein/total cholesterol ratio. The reduction in calculated coronary heart disease risk produced by doxazosin (-27.58%) was highly significant (p less than 0.0002) and greater than that produced by enalapril (-18.49% p less than 0.02).",
+  "onco": "Cisplatin and 5-fluorouracil for advanced locoregional and metastatic squamous cell carcinoma of the skin. Seven patients with advanced locoregional or metastatic squamous cell carcinoma of the skin were treated with cis-daimminedichloroplatin (cisplatin) and 5-fluorouracil (5-FU). Responses were seen in six of seven patients (three partial responses [PR] and three complete responses [CR]). One patient is alive and disease-free at 2 years. These results indicate that cisplatin and 5-FU is an effective combination regimen that should be used in future clinical trials in squamous cell carcinoma of the skin.",
+  "thal": "Molecular and hematologic characterization of Scottish-Irish type (epsilon gamma delta beta)zero thalassemia. The DNA deletion associated with an example of (epsilon gamma delta beta)zero thalassemia (Scottish-Irish type) was characterized. The deletion is approximately 205 kb in length and involves the epsilon, G gamma, A gamma, delta, and beta globin genes. The breakpoint is located 263 bp 3' to exon 3 of the beta globin gene. An LI (KpnI) repeat element approximately 320 bp in size is found at the 3' end of the novel DNA sequence. Different clinical phenotypes for three heterozygous neonates suggest that the deletion alone does not predict severity of (epsilon gamma delta beta)zero thalassemia at this age."
+};
+document.getElementById("trExample").onchange=e=>{
+  const v=TRIAGE_EXAMPLES[e.target.value];
+  if(v) document.getElementById("trText").value=v;
+};
+document.getElementById("trRun").onclick=async()=>{
+  const box=document.getElementById("trResult");
+  const text=document.getElementById("trText").value.trim();
+  if(text.length<10){box.innerHTML=apiErrorHTML(I18N[lang].trShort);return;}
+  if(TRIAGE_API.includes("REPLACE-WITH")){setApiStatus("offline");box.innerHTML=apiErrorHTML(I18N[lang].tryAgain);return;}
+  box.innerHTML=loadingHTML();
+  try{
+    // /health wakes the free Render instance; then the real inference call.
+    await wakeApi(TRIAGE_API+"/health",150000);
+    const res=await fetchWithTimeout(TRIAGE_API+"/predict",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({text}),cache:"no-store"},30000);
+    if(!res.ok){
+      let detail=`HTTP ${res.status}`;
+      try{const e=await res.json();detail=e.detail?JSON.stringify(e.detail):detail;}catch(_){}
+      throw new Error(detail);
+    }
+    const d=await res.json();
+    const conf=Number(d.confidence);
+    if(!d.category||!d.urgency||!Number.isFinite(conf)) throw new Error(I18N[lang].invalidResponse);
+    setApiStatus("online");
+    const color=d.urgency==="urgent"?"var(--red)":d.urgency==="attention"?"var(--amber)":"var(--green)";
+    const urg=I18N[lang]["urg_"+d.urgency]||d.urgency;
+    const cat=I18N[lang]["cat_"+d.category]||d.category;
+    const warn=conf<0.5?`<div class="triage-warn">${I18N[lang].trLowConf}</div>`:"";
+    box.innerHTML=`<div class="triage-result"><div class="triage-urgency" style="color:${color}">${urg}</div><div class="triage-cat">${cat}</div><div class="triage-conf"><i style="width:${Math.round(conf*100)}%"></i></div><div class="lab-note" style="margin-top:8px">${I18N[lang].trConf} · ${(conf*100).toFixed(0)}%</div>${warn}<div class="result-explainer">${I18N[lang].trResultNote}</div><div class="lab-note">${I18N[lang].liveResult}</div></div>`;
+  }catch(e){
+    setApiStatus("offline");
+    box.innerHTML=apiErrorHTML(e?.name==="AbortError"?I18N[lang].tryAgain:(e?.message||I18N[lang].tryAgain));
   }
 };
 
